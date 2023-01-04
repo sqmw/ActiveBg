@@ -22,24 +22,6 @@ class _LDrawerState extends State<LDrawer> {
       child: Column(
         children: [
           Expanded(
-            flex: 1,
-            child: TextButton(
-              onPressed: () {
-
-              },
-              child: Text("图片"),
-            )
-          ),
-          Expanded(
-              flex: 1,
-              child: TextButton(
-                onPressed: () {
-
-                },
-                child: Text("视频"),
-              )
-          ),
-          Expanded(
               flex: 1,
               child: TextButton(
                 onPressed: () {

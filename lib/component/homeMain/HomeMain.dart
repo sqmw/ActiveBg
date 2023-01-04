@@ -1,3 +1,4 @@
+import 'package:active_bg/component/homeMain/children/DynamicBg.dart';
 import 'package:active_bg/component/homeMain/children/Personal.dart';
 import 'package:active_bg/component/homeMain/children/Recommend.dart';
 import 'package:active_bg/component/homeMain/children/SelfDefine.dart';
@@ -16,10 +17,11 @@ class _HomeMainState extends State<HomeMain> {
   final List<Widget> _homeMainPartList = const [
     Recommend(),
     Personal(),
-    SelfDefine()
+    SelfDefine(),
+    DynamicBg(),
   ];
 
-  int _currentIndex = 1;
+  int _currentIndex = 3;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +74,22 @@ class _HomeMainState extends State<HomeMain> {
                 },
                 child: const Text(
                   "自定义",
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextButton(
+                onPressed: (){
+                  if(_currentIndex != 3){
+                    setState(() {
+                      _currentIndex = 3;
+                    });
+                  }
+                  developer.log("动态壁纸");
+                },
+                child: const Text(
+                  "动态壁纸",
                   textAlign: TextAlign.center,
                 ),
               ),
