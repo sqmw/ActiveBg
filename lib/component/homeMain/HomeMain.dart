@@ -4,6 +4,7 @@ import 'package:active_bg/component/homeMain/children/SelfDefine.dart';
 import 'package:active_bg/component/lDrawer/LDrawer.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
+import '../../utils/DataUtil.dart';
 
 class HomeMain extends StatefulWidget {
   const HomeMain({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _HomeMainState extends State<HomeMain> {
     SelfDefine()
   ];
 
-  int _currentIndex = 2;
+  int _currentIndex = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +46,7 @@ class _HomeMainState extends State<HomeMain> {
             ),
             Expanded(
               child: TextButton(
-                onPressed: (){
+                onPressed: ()async{
                   if(_currentIndex != 1){
                     setState(() {
                       _currentIndex = 1;

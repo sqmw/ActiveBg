@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:active_bg/interfaces/ChangeBgInterval.dart';
@@ -20,9 +21,11 @@ class SelfDefine extends StatefulWidget {
 class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
   bool _changeInterval = false;
   bool _imgFromLocal = false;
-  Duration _duration = const Duration(seconds: 30);
+  Duration _duration = const Duration(seconds: 10);
   String? _resourcePath = "${DataUtil.BATH_PATH}/image";
-  List<String> _imagePathList = [];
+  final List<String> _imagePathList = [];
+  Timer? _tLocal;
+  Timer? _tNet;
 
   @override
   Widget build(BuildContext context) {
@@ -38,6 +41,8 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
                 setState(() {
                   _changeInterval = !_changeInterval;
                   developer.log("_changeInterval--${_changeInterval},${value}");
+                  changeBgIntervalLocal();
+                  changeBgIntervalOnNet();
                 });
               },
             ) ,
@@ -57,6 +62,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
                       developer.log("_imgFromLocal: ${value}");
                       setState(() {
                         _imgFromLocal = value!;
+                        changeBgIntervalOnNet();
                       });
                       developer.log("${value}");
                     },
@@ -73,6 +79,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
                       developer.log("_imgFromLocal: ${value}");
                       setState(() {
                         _imgFromLocal = value!;
+                        changeBgIntervalLocal();
                       });
                       developer.log("${value}");
                     },
@@ -88,7 +95,9 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
             title: InkWell(
               onTap: ()async{
                 _resourcePath = await FileSelectorPlatform.instance.getDirectoryPath();
-                setState(() {});
+                setState(() {
+                  changeBgIntervalLocal();
+                });
               },
               child: Text("$_resourcePath"),
             ),
@@ -107,7 +116,9 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
                       initialTimerDuration: _duration,
                       onTimerDurationChanged: (Duration value) {
                         _duration = value;
-                        setState(() {});
+                        setState(() {
+                          changeBgIntervalLocal();
+                        });
                       });
                 });
               },
@@ -135,28 +146,46 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
         return;
     });
   }
-  ///该函数还未验证
+  ///该函数经过验证没有问题验证
   @override
   void changeBgIntervalOnNet() {
     // TODO: implement changeBgInterval
+    _tNet?.cancel();
     if(_changeInterval && !_imgFromLocal){
-      int i = 0;
-      Timer.periodic(_duration, (timer) {
-        DataUtil.changeBackground(_imagePathList[i++%_imagePathList.length].toNativeUtf8());
+      developer.log("net");
+      Map<String, dynamic> _resData;
+      _tNet = Timer.periodic(_duration, (timer) async {
+        if(!_changeInterval || _imgFromLocal){
+          timer.cancel();
+        }
+        int uniTimeId = DataUtil.getNowMicroseconds();
+        _resData = json.decode("${await DataUtil.dio.get("https://tuapi.eees.cc/api.php?category=dongman&type=json")}");
+        developer.log("${_resData}");
+        DataUtil.dio.download(_resData["img"], "${DataUtil.BATH_PATH}/image/${uniTimeId}.${_resData["format"]}")
+            .then((value){
+          Timer(const Duration(milliseconds: 10),(){
+            DataUtil.changeBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${_resData["format"]}".toNativeUtf8());
+          });
+        });
       });
     }
   }
 
   @override
-  void changeBgIntervalLocal() {
+  void changeBgIntervalLocal() async{
     // TODO: implement changeBgIntervalLocal
+    _tLocal?.cancel();
     if(_changeInterval && _imgFromLocal){
-      Directory directory = Directory(_resourcePath!);
-      directory.list().toList()
-          .then((value){
-        value.forEach((element) {
-          developer.log("${element.absolute}");
-        });
+      developer.log("local");
+      //加载对应文件夹里面的图片
+      await loadImageList();
+      int i = 0;
+      _tLocal = Timer.periodic(_duration, (timer) {
+        if(!_changeInterval || !_imgFromLocal){
+          timer.cancel();
+        }
+        developer.log("local: ${i%_imagePathList.length}");
+        DataUtil.changeBackground(_imagePathList[i++%_imagePathList.length].toNativeUtf8());
       });
     }
   }
