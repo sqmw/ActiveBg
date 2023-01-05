@@ -14,7 +14,14 @@ class _ImageViewState extends State<ImageView> {
       body: Stack(
         alignment: Alignment.center,
         children: [
-          widget.image,
+          Positioned.fill(
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: widget.image,
+            ),
+          ),
           Align(
             alignment: Alignment.topRight,
             child: InkWell(

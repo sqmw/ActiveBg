@@ -38,7 +38,7 @@ class _LDrawerState extends State<LDrawer> {
                 },
                 child: Text("关于"),
               )
-          )
+          ),
         ],
       ),
     );

@@ -1,4 +1,5 @@
 import 'package:active_bg/utils/DataUtil.dart';
+import 'package:dio/dio.dart';
 
 void main()async{
   List list = await DataUtil.getImgAbsUrls(ques: "壁纸", start: 150);
