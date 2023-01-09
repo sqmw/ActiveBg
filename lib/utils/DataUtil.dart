@@ -32,6 +32,8 @@ class DataUtil{
   static const QUERY_VIDEO_PAGE_LIST = "section>ul>li>div>a";
   static const QUERY_VIDEO = "main video";
   static final Random _random = Random();
+  /// 现在壁纸的类型是动态的还是静态的
+  static bool isActiveBgNow = false;
 
   static int getRandomInt({int max = MAX_IMG_FIRST}){
     return _random.nextInt(max);
@@ -42,6 +44,7 @@ class DataUtil{
   }
 
   /// 返回一个ListTile
+  //region
   static Future<ListTile> getImageListTile(BuildContext context, String imgUrl)async{
     return ListTile(
       onTap: (){
@@ -88,7 +91,8 @@ class DataUtil{
       ),
     );
   }
-
+ //endregion
+  /// bing必须要一个headers
   //region
   static const BING_HEADERS = {
     //GET /images/async?q=%E5%A3%81%E7%BA%B8&first=150&count=35 HTTP/2
@@ -106,6 +110,7 @@ class DataUtil{
     "Sec-Fetch-User": "?1"
   };
 
+  /// dynamic 不需要headers
   static const DYNAMIC_HEADERS = {
     //GET /images/async?q=%E5%A3%81%E7%BA%B8&first=150&count=35 HTTP/2
     "Host": "bizhi.cheetahfun.com",
@@ -138,7 +143,7 @@ class DataUtil{
     return resList;
   }
 
-  static List<html_dom.Element> getDynamicBgUrlList(String htmlStr, String selector){
+  static List<html_dom.Element> getEleListFromStrBySelector(String htmlStr, String selector){
     html_dom.Document document = html.parse(htmlStr);
     return document.querySelectorAll(selector);
   }
@@ -170,6 +175,28 @@ class DataUtil{
     }
     return '.jpg';
   }
+
+  static String dynamicBgUrl = "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview/101d3f1af19562aa17ed65790c04c1b0_preview.mp4";
+  /// 通过端口来设置动态壁纸的地址
+  static void setDynamicBgUrl(String url){
+    dynamicBgUrl  = url;
+  }
+  /// 启动壁纸展示进程（这个进程可以是一个浏览器也可以是一个视频播放器）
+  /// 使用浏览器的话，html5规范不允许自动播放又声音的视频，使用视频播放器的话可以，但是视频播放器的话，功能就少了点
+  static bool startActiveBgWeb(){
+    // 需要判断当前的壁纸的类型
+    return true;
+  }
+
+  /// 将展示动态壁纸的窗口放在worderW下面
+  static bool setActiveBgWndWebPos(){
+    return true;
+  }
+
+  /// 创建workerW
+  static void createWorkerW(){
+
+  }
 }
 
 /**
@@ -193,7 +220,7 @@ class DataUtil{
 
 
 /**
- * package:html 0.15.0 0.15.1 的bug
+ * package:html 0.15.0 0.15.1 的 bug
  * querySelectorAll("section>ul>li>div>a")  ->得到结果
  * querySelectorAll("section>ul>li a")      ->什么都没有
  */

@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:active_bg/component/dynamic/DynamicSearch.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer';
 import 'package:html/dom.dart' as html_dom;
 import 'package:html/parser.dart' as html show parse;
 
 import '../../../utils/DataUtil.dart';
+import 'package:active_bg/component/dynamic/RecommendAndClassifySet.dart';
 import 'package:active_bg/component/utils/ImageView.dart';
 
 class DynamicBg extends StatefulWidget {
@@ -19,10 +21,8 @@ class DynamicBg extends StatefulWidget {
 class _DynamicBgState extends State<DynamicBg> {
   late TextEditingController _keyTextController;
   late Size _size;
-  late List<Widget> _classificationList = [];
-  final List<Widget> _recommendDynamicBgList = [
-
-  ];
+  late final List<Widget> _classificationList = [];
+  final List<Widget> _recommendDynamicBgList = [];
 
 
   @override
@@ -30,11 +30,14 @@ class _DynamicBgState extends State<DynamicBg> {
     super.initState();
     _keyTextController = TextEditingController();
     loadWidgetInfo();
+    log("初始化");
   }
 
   @override
   Widget build(BuildContext context) {
     _size = MediaQuery.of(context).size;
+    // log("build");
+    // log("${_classificationList.length}-->分类，${_recommendDynamicBgList.length}-->推荐");
     return ListView(
       scrollDirection: Axis.vertical,
       children: [
@@ -47,6 +50,9 @@ class _DynamicBgState extends State<DynamicBg> {
               decoration: InputDecoration(
                 suffix: IconButton(
                   onPressed: () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context){
+                      return DynamicSearchSet("https://bizhi.cheetahfun.com/search.html?search=${Uri.encodeFull(_keyTextController.text)}&");
+                    }));
                   },
                   icon: const Icon(Icons.search),
                 )
@@ -55,44 +61,22 @@ class _DynamicBgState extends State<DynamicBg> {
             ),
           ),
         ),
-        /// 推荐
-        const Text("推荐",textAlign: TextAlign.center,),
-        SizedBox(
-          height: _size.height * 1,
-          width: _size.width,
-          child:GridView.count(
-            childAspectRatio: 99/54,
-            crossAxisCount: 3,
-            mainAxisSpacing: 20,
-            children: _recommendDynamicBgList,
-          ),
-        ),
-        /// 分类
-        const Text("分类", textAlign: TextAlign.center,),
-        SizedBox(
-          width: _size.width,
-          height: _size.width / 4 * 54/99 * (_classificationList.length / 4).ceil() + 100,
-          child:GridView.count(
-            childAspectRatio: 99/54,
-            crossAxisCount: 4,
-            mainAxisSpacing: 20,
-            children: _classificationList,
-          ),
-        ),
+        /// 推荐和分类
+        const RecommendAndClassifySet(),
       ],
     );
   }
 
-  Future<void> loadWidgetInfo() async{
+  void loadWidgetInfo() async{
     //DataUtil.dio.options.headers = DataUtil.DYNAMIC_HEADERS;
-    var response = await DataUtil.dio.get("https://bizhi.cheetahfun.com/");
+    var response = await DataUtil.dio.get(DataUtil.DYNAMIC_BASE_URL);
     //DataUtil.dio.options.headers = {};
     /// 获取推荐
     // region
-    log("${response.data.toString().length}--->length");
-    List<html_dom.Element> recommendListInfo = DataUtil.getDynamicBgUrlList("${response.data}", DataUtil.QUERY_VIDEO_PAGE_LIST);
-    log("${recommendListInfo}");
-    //print(element.innerHtml);
+    // log("${response.data.toString().length}--->length");
+    List<html_dom.Element> recommendListInfo = DataUtil.getEleListFromStrBySelector("${response.data}", DataUtil.QUERY_VIDEO_PAGE_LIST);
+    /// log("${recommendListInfo}");
+    /// print(element.innerHtml);
     for (var element in recommendListInfo) {
       _recommendDynamicBgList.add(ListTile(
         onTap: (){
@@ -134,9 +118,14 @@ class _DynamicBgState extends State<DynamicBg> {
     }
     //endregion
     /// 获取分类
-    List<html_dom.Element> classificationListInfo = DataUtil.getDynamicBgUrlList("${response.data}", DataUtil.QUERY_TYPE);
+    List<html_dom.Element> classificationListInfo = DataUtil.getEleListFromStrBySelector("${response.data}", DataUtil.QUERY_TYPE);
     for (var element in classificationListInfo) {
       _classificationList.add(ListTile(
+        onTap: (){
+          Navigator.push(context,MaterialPageRoute(builder: (context){
+            return const DynamicSearchSet("");
+          }));
+        },
         title: const Image(image: NetworkImage("https://tuapi.eees.cc/api.php?category=dongman&type=302")),
         subtitle: Text(element.text,textAlign: TextAlign.center,),
       ));
