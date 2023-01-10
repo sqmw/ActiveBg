@@ -2,16 +2,17 @@ import 'dart:ffi';
 import "package:win32/win32.dart";
 /// 在程序开始执行的时候，就创建workerW
 class Win32Util{
-  static late final int _workerWHexHandle;
-  /// 表示的显示动态壁纸的窗口
-  static int _hWndActiveWeb = FindWindow(nullptr, TEXT("active_web_bg"));
+  static int _workerWHexHandle = 0;
+  /// 表示的显示动态壁纸的窗口，需要维护这个句柄是最新的状态
+  static int hWndActiveWeb = FindWindow(nullptr, TEXT("active_web_bg"));
+  /// 深度搜索找到activeBg的句柄
   static void updateActiveBgWebHWnd(){
-    _hWndActiveWeb = FindWindow(nullptr, TEXT("active_web_bg"));
-    if(_hWndActiveWeb == 0){
+    hWndActiveWeb = FindWindow(nullptr, TEXT("active_web_bg"));
+    if(hWndActiveWeb == 0){
       if(_workerWHexHandle == 0){
         createWorkerW();
       }
-      _hWndActiveWeb = FindWindowEx(_workerWHexHandle, 0, nullptr, TEXT("active_web_bg"));
+      hWndActiveWeb = FindWindowEx(Win32Util.enumGetWorkerWDescHandle(), 0, nullptr, TEXT("active_web_bg"));
     }
   }
   static int _enumWindowsProc(int hWnd,int lParam){
@@ -33,27 +34,34 @@ class Win32Util{
     return _workerWHexHandle;
   }
 
-  /// 如果没有workerW这个窗口的话，就基本没什么影响
+  /// 如果workerW这个窗口已经存在，就不会创建
   static void createWorkerW(){
+    _workerWHexHandle = enumGetWorkerWDescHandle();
+    if(_workerWHexHandle != 0){
+      return;
+    }
     Pointer<IntPtr> result  = Pointer.fromAddress(0);
-    SendMessageTimeout(FindWindow(TEXT("Program"), nullptr),  0x052C, 0, 0, SMTO_NORMAL, 1000, result);
+    SendMessageTimeout(FindWindow(TEXT("Progman"), nullptr),  0x052C, 0, 0, SMTO_NORMAL, 1000, result);
   }
 
-  static void setActiveBgToParent({int parent = 0}){
+  static bool setActiveBgToParentWorkerW({int parent = 0}){
     /// 去掉外边框
-    int style = GetWindowLongPtr(_hWndActiveWeb, GWL_STYLE);
+    updateActiveBgWebHWnd();
+    int style = GetWindowLongPtr(hWndActiveWeb, GWL_STYLE);
     style = style & ~WS_CAPTION & ~WS_SYSMENU & ~WS_SIZEBOX;
-    SetWindowLongPtr(_hWndActiveWeb, GWL_STYLE, style);
+    SetWindowLongPtr(hWndActiveWeb, GWL_STYLE, style);
     /// 设置父窗口以及全屏显示
-    SetParent(_hWndActiveWeb, parent);
-    ShowWindow(_hWndActiveWeb, SW_MAXIMIZE);
+    return SetParent(hWndActiveWeb, enumGetWorkerWDescHandle()) != 0 &&
+    ShowWindow(hWndActiveWeb, SW_MAXIMIZE) != 0;
   }
 
   /// 销毁一个窗口在内存中的进程
   static void destroyActiveBgWin(){
-    if(_hWndActiveWeb == 0){
+    if(hWndActiveWeb == 0){
       updateActiveBgWebHWnd();
     }
-    SendMessage(_hWndActiveWeb,WM_DESTROY,0,0);
+    SendMessage(hWndActiveWeb,WM_DESTROY,0,0);
+    /// 销毁之后置为 0
+    hWndActiveWeb = 0;
   }
 }

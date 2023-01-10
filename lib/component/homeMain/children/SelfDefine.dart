@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:active_bg/interfaces/ChangeBgInterval.dart';
-import 'package:ffi/ffi.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:file_selector_platform_interface/file_selector_platform_interface.dart';
@@ -91,7 +90,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
         ),
         Expanded(
           child: ListTile(
-            leading: const Text("本地地址"),
+            leading: const Text("本地文件存储地址"),
             title: InkWell(
               onTap: ()async{
                 _resourcePath = await FileSelectorPlatform.instance.getDirectoryPath();
@@ -123,7 +122,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
                 });
               },
               child: Text(
-                "${_duration}",
+                "$_duration",
                 textAlign: TextAlign.center,
                 style: const TextStyle(color: Colors.red),
               ),
@@ -164,7 +163,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
         DataUtil.dio.download(_resData["img"], "${DataUtil.BATH_PATH}/image/${uniTimeId}.${_resData["format"]}")
             .then((value){
           Timer(const Duration(milliseconds: 10),(){
-            DataUtil.changeBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${_resData["format"]}".toNativeUtf8());
+            DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${_resData["format"]}");
           });
         });
       });
@@ -176,7 +175,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
     // TODO: implement changeBgIntervalLocal
     _tLocal?.cancel();
     if(_changeInterval && _imgFromLocal){
-      developer.log("local");
+      // developer.log("local");
       //加载对应文件夹里面的图片
       await loadImageList();
       int i = 0;
@@ -185,8 +184,15 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
           timer.cancel();
         }
         developer.log("local: ${i%_imagePathList.length}");
-        DataUtil.changeBackground(_imagePathList[i++%_imagePathList.length].toNativeUtf8());
+        DataUtil.changeStaticBackground(_imagePathList[i++%_imagePathList.length]);
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tLocal?.cancel();
+    _tNet?.cancel();
   }
 }

@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'dart:ffi' as ffi;
+import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:ffi/ffi.dart';
@@ -10,14 +12,18 @@ import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html_dom;
 
 import '../component/utils/ImageView.dart';
+import './FileDirUtil.dart' as file_dir show getPathFromIndex;
 
 typedef ChangeBackgroundFFI = ffi.Void Function(ffi.Pointer<Utf8>);
 typedef ChangeBackground = void Function(ffi.Pointer<Utf8>);
-
+// TranslucentTB
 class DataUtil{
-  static const String BATH_PATH = "F:/language/flutter/ActiveBg/lib/assets";
-  static final _dylib = ffi.DynamicLibrary.open("lib/dll/bg_01.dll");
-  static final ChangeBackground changeBackground = _dylib.lookup<ffi.NativeFunction<ChangeBackgroundFFI>>("changeBackground").asFunction();
+  // 用来存储数据的基本路径，目前仅仅可能需要修改的配置属性就只有这个
+  static String BATH_PATH = "${file_dir.getPathFromIndex(Directory("").absolute.path, -1)}/assets";
+  static String ACTIVE_WEB_BG_PATH = "F:/language/flutter/active_web_bg/build/windows/runner/Release/active_web_bg.exe";
+  static String dllLibPath = "lib/dll";
+  static final _dylib = ffi.DynamicLibrary.open("$dllLibPath/bg_01.dll");
+  static final ChangeBackground _changeBackground = _dylib.lookup<ffi.NativeFunction<ChangeBackgroundFFI>>("changeBackground").asFunction();
   static final Dio dio = Dio();
   static const IMAGE_COUNT = 9;
   static const MAX_IMG_FIRST = 460;
@@ -33,10 +39,17 @@ class DataUtil{
   static const QUERY_VIDEO = "main video";
   static final Random _random = Random();
   /// 现在壁纸的类型是动态的还是静态的
-  static bool isActiveBgNow = false;
+  /// 应该通过判断是否能够获取到相应的窗口的句柄来判定壁纸的状态
 
   static int getRandomInt({int max = MAX_IMG_FIRST}){
     return _random.nextInt(max);
+  }
+
+  static void changeStaticBackground(String imgPath){
+    //isActiveBgNow = false;
+    Win32Util.destroyActiveBgWin();
+    //activeBgProcNowIsShow = false;
+    _changeBackground(imgPath.toNativeUtf8());
   }
 
   static int getNowMicroseconds(){
@@ -80,7 +93,7 @@ class DataUtil{
                 DataUtil.dio.download(imgUrl, "${DataUtil.BATH_PATH}/image/${uniTimeId}${suffix}")
                     .then((value){
                   Timer(const Duration(milliseconds: 10),(){
-                    DataUtil.changeBackground("${DataUtil.BATH_PATH}/image/${uniTimeId}$suffix".toNativeUtf8());
+                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/image/${uniTimeId}$suffix");
                   });
                 });
               },
@@ -178,24 +191,35 @@ class DataUtil{
 
   static String dynamicBgUrl = "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview/101d3f1af19562aa17ed65790c04c1b0_preview.mp4";
   /// 通过端口来设置动态壁纸的地址
+  /// 这里需要判断此时是否是设置动态壁纸，用来启动active_web_bg进程
   static void setDynamicBgUrl(String url){
+    Win32Util.updateActiveBgWebHWnd();
+    developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
+    if(Win32Util.hWndActiveWeb == 0){
+      startActiveBgWebProc();
+    }
     dynamicBgUrl  = url;
   }
   /// 启动壁纸展示进程（这个进程可以是一个浏览器也可以是一个视频播放器）
   /// 使用浏览器的话，html5规范不允许自动播放又声音的视频，使用视频播放器的话可以，但是视频播放器的话，功能就少了点
-  static bool startActiveBgWeb(){
+  /// 在开启这个进程之后，需要将这个进程设置在workerW下面
+  static bool startActiveBgWebProc(){
     // 需要判断当前的壁纸的类型
+    Future.microtask(() async{
+      Process.run(ACTIVE_WEB_BG_PATH, []);
+      Win32Util.createWorkerW();
+      Timer.periodic(const Duration(milliseconds: 300), (timer) {
+        if (Win32Util.setActiveBgToParentWorkerW()){
+          timer.cancel();
+        }
+      });
+    });
     return true;
   }
 
   /// 将展示动态壁纸的窗口放在worderW下面
   static bool setActiveBgWndWebPos(){
     return true;
-  }
-
-  /// 创建workerW
-  static void createWorkerW(){
-
   }
 }
 

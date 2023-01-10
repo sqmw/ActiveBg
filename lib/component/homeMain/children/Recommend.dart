@@ -133,7 +133,7 @@ class _RecommendState extends State<Recommend> {
                                 .then((value){
                                   _savedImgNameList.add("${uniTimeId}.${imgInfo["format"]}");
                                   Timer(const Duration(milliseconds: 10),(){
-                                    DataUtil.changeBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${imgInfo["format"]}".toNativeUtf8());
+                                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${imgInfo["format"]}");
                                   });
                               });
                             },

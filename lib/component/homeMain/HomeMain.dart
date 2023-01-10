@@ -4,7 +4,6 @@ import 'package:active_bg/component/homeMain/children/Recommend.dart';
 import 'package:active_bg/component/homeMain/children/SelfDefine.dart';
 import 'package:active_bg/component/lDrawer/LDrawer.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer' as developer;
 import '../../utils/DataUtil.dart';
 
 class HomeMain extends StatefulWidget {
@@ -38,7 +37,6 @@ class _HomeMainState extends State<HomeMain> {
                       _currentIndex = 0;
                     });
                   }
-                  developer.log("推荐");
                 },
                 child: const Text(
                   "推荐",
@@ -54,7 +52,6 @@ class _HomeMainState extends State<HomeMain> {
                       _currentIndex = 1;
                     });
                   }
-                  developer.log("个性化");
                 },
                 child: const Text(
                   "个性化",
@@ -70,7 +67,6 @@ class _HomeMainState extends State<HomeMain> {
                       _currentIndex = 2;
                     });
                   }
-                  developer.log("自定义");
                 },
                 child: const Text(
                   "自定义",
@@ -86,7 +82,6 @@ class _HomeMainState extends State<HomeMain> {
                       _currentIndex = 3;
                     });
                   }
-                  developer.log("动态壁纸");
                 },
                 child: const Text(
                   "动态壁纸",

@@ -1,11 +1,8 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:active_bg/component/dynamic/DynamicSearch.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'dart:developer';
 import 'package:html/dom.dart' as html_dom;
-import 'package:html/parser.dart' as html show parse;
 
 import '../../../utils/DataUtil.dart';
 import 'package:active_bg/component/dynamic/RecommendAndClassifySet.dart';
@@ -45,19 +42,35 @@ class _DynamicBgState extends State<DynamicBg> {
         Center(
           child: SizedBox(
             width: _size.width * 0.8,
-            child: TextField(
-              autofocus: true,
-              decoration: InputDecoration(
-                suffix: IconButton(
-                  onPressed: () {
-                    Navigator.push(context,MaterialPageRoute(builder: (context){
-                      return DynamicSearchSet("https://bizhi.cheetahfun.com/search.html?search=${Uri.encodeFull(_keyTextController.text)}&");
-                    }));
-                  },
-                  icon: const Icon(Icons.search),
-                )
+            /// 添加回车键搜索监听
+            child: RawKeyboardListener(
+              onKey: (RawKeyEvent rawKeyEvent){
+                if(rawKeyEvent.runtimeType == RawKeyDownEvent){
+                  if(rawKeyEvent.data is RawKeyEventDataWindows ){
+                    RawKeyEventDataWindows rawKeyEventDataWindows = rawKeyEvent.data as RawKeyEventDataWindows;
+                    if(rawKeyEventDataWindows.logicalKey.keyId == LogicalKeyboardKey.enter.keyId){
+                      Navigator.push(context,MaterialPageRoute(builder: (context){
+                        return DynamicSearchSet("https://bizhi.cheetahfun.com/search.html?search=${Uri.encodeFull(_keyTextController.text)}&");
+                      }));
+                    }
+                  }
+                }
+              },
+              focusNode: FocusNode(),
+              child: TextField(
+                autofocus: true,
+                decoration: InputDecoration(
+                    suffix: IconButton(
+                      onPressed: () {
+                        Navigator.push(context,MaterialPageRoute(builder: (context){
+                          return DynamicSearchSet("https://bizhi.cheetahfun.com/search.html?search=${Uri.encodeFull(_keyTextController.text)}&");
+                        }));
+                      },
+                      icon: const Icon(Icons.search),
+                    )
+                ),
+                controller: _keyTextController,
               ),
-              controller: _keyTextController,
             ),
           ),
         ),
