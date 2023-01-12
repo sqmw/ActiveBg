@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:ffi';
 import "package:win32/win32.dart";
 /// 在程序开始执行的时候，就创建workerW
@@ -28,6 +29,7 @@ class Win32Util{
     return TRUE;
   }
 
+  /// 在 <第二个> workerW存在的情况下，获取第二个 _workerWHexHandle 以及 赋值
   static int enumGetWorkerWDescHandle(){
     final enumWinsFunc = Pointer.fromFunction<EnumWindowsProc>(_enumWindowsProc, 0);
     EnumWindows(enumWinsFunc, 0);
@@ -35,13 +37,22 @@ class Win32Util{
   }
 
   /// 如果workerW这个窗口已经存在，就不会创建
+  /// 如果这个窗口不存在，启动一次程序就只创建一次，这个函数只能调用一次
   static void createWorkerW(){
     _workerWHexHandle = enumGetWorkerWDescHandle();
     if(_workerWHexHandle != 0){
       return;
     }
+    int count = 1;
     Pointer<IntPtr> result  = Pointer.fromAddress(0);
     SendMessageTimeout(FindWindow(TEXT("Progman"), nullptr),  0x052C, 0, 0, SMTO_NORMAL, 1000, result);
+    Timer.periodic(const Duration(seconds: 1), (timer) {
+      SendMessageTimeout(FindWindow(TEXT("Progman"), nullptr),  0x052C, 0, 0, SMTO_NORMAL, 1000, result);
+      count ++;
+      if(count > 5 || enumGetWorkerWDescHandle() != 0){
+        timer.cancel();
+      }
+    });
   }
 
   static bool setActiveBgToParentWorkerW({int parent = 0}){
@@ -60,7 +71,7 @@ class Win32Util{
     if(hWndActiveWeb == 0){
       updateActiveBgWebHWnd();
     }
-    SendMessage(hWndActiveWeb,WM_DESTROY,0,0);
+    PostMessage(hWndActiveWeb,WM_DESTROY,0,0);
     /// 销毁之后置为 0
     hWndActiveWeb = 0;
   }

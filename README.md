@@ -1,57 +1,80 @@
-# active_bg
 
-A new Flutter project.
+<p style="text-align: center">
+  <img alt="Logo" src="/lib/assets/logo.svg" width="200" style="background-color: #a99a9a"/>
+  <h2 style="text-align: center">activeBg</h2>
+</p>
 
-## Getting Started
+<div style="display: flex; justify-content: space-around">
+    <a>点击前往下载</a>
+    <a>效果展示</a>
+</div>
 
-This project is a starting point for a Flutter application.
+[//]: # (注释)
 
-A few resources to get you started if this is your first Flutter project:
+## 内容
+- [关于](#关于)
+- [使用](#使用)
+- [特点](#特点)
+- [下载](#下载)
+- [支持](#支持)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 关于
+<img src="../assets/images/1672324183496263.jpg" width="600" height="338"/>
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+activeBg 是拥有各种类型的壁纸选择，并且开源免费的软件
 
-```dart
-/// //div[@id='mmComponent_images_1']//li//a/@m
-/// m 里面的murl 是真实地址
-/**
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I&layout=RowBased_Landscape&mmasync=1&dgState=x*217_y*1143_h*185_c*1_i*141_r*27&IG=94E3F74998EC439189A734BFF7A1B44C&SFX=5&iid=images.5556
+<img src="../assets/images/1672324860150398.jpg" width="600" height="338"/>
 
-    del &iid=images.5556  结果会稍有不同，但是数量不变，可能是bing手机我们个人的特性ID
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I&layout=RowBased_Landscape&mmasync=1&dgState=x*217_y*1143_h*185_c*1_i*141_r*27&IG=94E3F74998EC439189A734BFF7A1B44C&SFX=5
+activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
-    del &SFX=5    结果会稍有不同，但是数量不变，
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I&layout=RowBased_Landscape&mmasync=1&dgState=x*217_y*1143_h*185_c*1_i*141_r*27&IG=94E3F74998EC439189A734BFF7A1B44C
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I&layout=RowBased_Landscape&mmasync=1&dgState=x*217_y*1143_h*185_c*1_i*141_r*27
-    del &IG=94E3F74998EC439189A734BFF7A1B44C
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I&layout=RowBased_Landscape&mmasync=1
-    del &dgState=x*217_y*1143_h*185_c*1_i*141_r*27 返回的图片不展示了，应该是没有了src地址
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I&layout=RowBased_Landscape
-    del &mmasync=1 删除之后没有排版，不按照之前的style来排列了
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle&datsrc=I
-    del &layout=RowBased_Landscape
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0&tsc=ImageHoverTitle
-    del &datsrc=I
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35&apc=0
-    del &tsc=ImageHoverTitle
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508&relp=35
-    del &apc=0  变化比较大，但是还是35张
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35&cw=1536&ch=508
-    del &relp=35  结果和上个基本一致
-    https://cn.bing.com/images/async?q=壁纸&first=150&count=35
-    del &cw=1080&ch=100 这个应该是做电脑屏幕适应的，方便浏览器展示
-    用来产生图片URL：https://cn.bing.com/images/async?q=壁纸&first=150&count=35
-    count <= 35
+#### 加入讨论:
+* <a href="https://www.reddit.com/r/LivelyWallpaper/">Gitee</a>
+* <a href="https://gitee.com/s99q/ActiveBg/issues">Github</a>
 
- */
-```
+## 使用
 
-```dart
-/// 百度
-/// https://image.baidu.com/search/acjson?tn=resultjson_com&logid=10905178178117166935&ipn=rj&ct=201326592&is=&fp=result&fr=&word=壁纸&cg=wallpaper&queryWord=壁纸&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=&z=&ic=&hd=&latest=&copyright=&s=&se=&tab=&width=&height=&face=&istype=&qc=&nc=1&expermode=&nojc=&isAsync=&pn=150&rn=30&gsm=96&1672755242163=
-/// https://image.baidu.com/search/acjson?tn=resultjson_com&logid=10905178178117166935&ipn=rj&ct=201326592&is=&fp=result&fr=&word=壁纸&cg=wallpaper&queryWord=壁纸&cl=2&lm=-1&ie=utf-8&oe=utf-8&adpicid=&st=&z=&ic=&hd=&latest=&copyright=&s=&se=&tab=&width=&height=&face=&istype=&qc=&nc=1&expermode=&nojc=&isAsync=&pn=180&rn=30&gsm=b4&1672755242294=
-```
+#### 开启任务栏透明
+<img src="">
+
+#### 设置壁纸定时切换
+<img src="">
+
+#### 搜索壁纸
+<img src="">
+
+#### 设定动态壁纸
+<img src="">
+
+## 特点
+*轻量级(安装包体积小、启动之后占用CPU以及内存均很小)*
+
+[//]: # (这里需要放置CPU以及内存的图片)
+#### 图片或者动图展示
+<img src="/lib/assets/description/activeBg_usage_of_CPU_and_memory.png" width="600" height="338"/>
+> 本软件的CPU以及内存占用情况
+<img src="/lib/assets/description/XXdesk_software_usage_of_CPU_and_memory.png" width="600" height="338"/>
+> 某软件CPU以及内存占用情况
+<br />
+
+* 任务栏目前借助开源项目<a href="https://github.com/TranslucentTB/TranslucentTB">TranslucentTB</a>实现
+* 提供了多种多样的壁纸选择，可以个性化设置
+* 经过测试在动态桌面的时候，内存占用仅仅45M，CPU占用更低
+#### <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">WebView2</a>
+<img src="../assets/images/1672325302833096.jpg" width="600" height="338"/>
+
+* 加载Html文件或者一个url链接地址作为壁纸
+* 可以支持运行JS脚本(暂未开放接口)
+* 支持音频响应式壁纸(暂未开放接口)
+* 支持个性化自定义静态壁纸API
+
+## 下载
+
+<a href="">点击前往下载</a>
+
+## 支持
+你是桌面美化的热爱者吗，下面的选择可以让你贡献一份力量
+#### 程序员
+欢迎加入来贡献代码
+
+#### 建议和 bug 提交
+给出新的特征的建议以及错误报告来改善activeBg

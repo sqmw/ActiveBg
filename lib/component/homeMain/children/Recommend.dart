@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:active_bg/component/utils/ImageView.dart';
-import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as developer;
 
@@ -77,11 +76,11 @@ class _RecommendState extends State<Recommend> {
         childAspectRatio:16/10,
       ),
       itemCount: _imgCou,
-      //如果已经有了，就返回已经有了的，否则返回新的
+      // 如果已经有了，就返回已经有了的，否则返回新的
       itemBuilder: (context,index){
-        developer.log("index: ${index}");
+        developer.log("index: $index");
         if(index + DataUtil.IMAGE_COUNT < _imgCou){
-          //这里必须JSON化
+          // 这里必须JSON化
           future = Future.sync(() => json.encode(_imageInfoList[index]));
         }else{
           future = DataUtil.dio.get("https://tuapi.eees.cc/api.php?category=dongman&type=json&r=${DataUtil.getRandomInt()}");
@@ -129,11 +128,11 @@ class _RecommendState extends State<Recommend> {
                             onPressed: () {
                               developer.log("set: ${index}");
                               int uniTimeId = DataUtil.getNowMicroseconds();
-                              DataUtil.dio.download(imgInfo["img"], "${DataUtil.BATH_PATH}/image/${uniTimeId}.${imgInfo["format"]}")
+                              DataUtil.dio.download(imgInfo["img"], "${DataUtil.BATH_PATH}/images/${uniTimeId}.${imgInfo["format"]}")
                                 .then((value){
                                   _savedImgNameList.add("${uniTimeId}.${imgInfo["format"]}");
                                   Timer(const Duration(milliseconds: 10),(){
-                                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${imgInfo["format"]}");
+                                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/images/$uniTimeId.${imgInfo["format"]}");
                                   });
                               });
                             },

@@ -1,6 +1,4 @@
 import 'package:active_bg/component/lDrawer/children/About.dart';
-import 'package:active_bg/utils/ConfigUtil.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import './children/TranslucentTB.dart';
 
@@ -40,7 +38,7 @@ class _LDrawerState extends State<LDrawer> {
                 onPressed: () {
 
                 },
-                child: Text("捐助"),
+                child: const Text("捐助"),
               )
           ),
           Expanded(

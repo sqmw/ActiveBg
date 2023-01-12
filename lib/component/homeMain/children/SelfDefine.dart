@@ -9,6 +9,7 @@ import 'package:file_selector_platform_interface/file_selector_platform_interfac
 import 'dart:developer' as developer;
 
 import '../../../utils/DataUtil.dart';
+import '../../../utils/ConfigUtil.dart' as config show saveConfig;
 
 class SelfDefine extends StatefulWidget {
   const SelfDefine({Key? key}) : super(key: key);
@@ -21,7 +22,6 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
   bool _changeInterval = false;
   bool _imgFromLocal = false;
   Duration _duration = const Duration(seconds: 10);
-  String? _resourcePath = "${DataUtil.BATH_PATH}/image";
   final List<String> _imagePathList = [];
   Timer? _tLocal;
   Timer? _tNet;
@@ -75,7 +75,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
                     value: true,
                     groupValue: _imgFromLocal,
                     onChanged: (bool? value) {
-                      developer.log("_imgFromLocal: ${value}");
+                      // developer.log("_imgFromLocal: ${value}");
                       setState(() {
                         _imgFromLocal = value!;
                         changeBgIntervalLocal();
@@ -93,12 +93,13 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
             leading: const Text("本地文件存储地址"),
             title: InkWell(
               onTap: ()async{
-                _resourcePath = await FileSelectorPlatform.instance.getDirectoryPath();
+                DataUtil.BATH_PATH = (await FileSelectorPlatform.instance.getDirectoryPath())!;
                 setState(() {
+                  config.saveConfig();
                   changeBgIntervalLocal();
                 });
               },
-              child: Text("$_resourcePath"),
+              child: Text(DataUtil.BATH_PATH),
             ),
           ),
         ),
@@ -134,14 +135,14 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
   }
 
   Future<void> loadImageList()async{
-    Directory directory = Directory(_resourcePath!);
+    Directory directory = Directory("${DataUtil.BATH_PATH}/images");
     directory.list().toList()
       .then((value){
-        value.forEach((element) {
+        for (var element in value) {
           if(FileSystemEntity.isFileSync(element.absolute.path)){
             _imagePathList.add(element.absolute.path);
           }
-        });
+        }
         return;
     });
   }
@@ -152,18 +153,18 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
     _tNet?.cancel();
     if(_changeInterval && !_imgFromLocal){
       developer.log("net");
-      Map<String, dynamic> _resData;
+      Map<String, dynamic> resData;
       _tNet = Timer.periodic(_duration, (timer) async {
         if(!_changeInterval || _imgFromLocal){
           timer.cancel();
         }
         int uniTimeId = DataUtil.getNowMicroseconds();
-        _resData = json.decode("${await DataUtil.dio.get("https://tuapi.eees.cc/api.php?category=dongman&type=json")}");
-        developer.log("${_resData}");
-        DataUtil.dio.download(_resData["img"], "${DataUtil.BATH_PATH}/image/${uniTimeId}.${_resData["format"]}")
+        resData = json.decode("${await DataUtil.dio.get("https://tuapi.eees.cc/api.php?category=dongman&type=json")}");
+        developer.log("$resData");
+        DataUtil.dio.download(resData["img"], "${DataUtil.BATH_PATH}/images/${uniTimeId}.${resData["format"]}")
             .then((value){
           Timer(const Duration(milliseconds: 10),(){
-            DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/image/$uniTimeId.${_resData["format"]}");
+            DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/images/$uniTimeId.${resData["format"]}");
           });
         });
       });
@@ -183,7 +184,7 @@ class _SelfDefineState extends State<SelfDefine> implements ChangeBgInterval{
         if(!_changeInterval || !_imgFromLocal){
           timer.cancel();
         }
-        developer.log("local: ${i%_imagePathList.length}");
+        // developer.log("local: ${i%_imagePathList.length}");
         DataUtil.changeStaticBackground(_imagePathList[i++%_imagePathList.length]);
       });
     }

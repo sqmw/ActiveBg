@@ -13,14 +13,15 @@ import 'package:html/dom.dart' as html_dom;
 
 import '../component/utils/ImageView.dart';
 import './FileDirUtil.dart' as file_dir show getPathFromIndex;
+import 'ConfigUtil.dart' as config show saveConfig;
 
 typedef ChangeBackgroundFFI = ffi.Void Function(ffi.Pointer<Utf8>);
 typedef ChangeBackground = void Function(ffi.Pointer<Utf8>);
 // TranslucentTB
 class DataUtil{
   // 用来存储数据的基本路径，目前仅仅可能需要修改的配置属性就只有这个
-  static String BATH_PATH = "${file_dir.getPathFromIndex(Directory("").absolute.path, -1)}/assets";
-  static String ACTIVE_WEB_BG_PATH = "F:/language/flutter/active_web_bg/build/windows/runner/Release/active_web_bg.exe";
+  static String BATH_PATH = "";
+  static String ACTIVE_WEB_BG_PATH = "F:\\language\\flutter\\active_web_bg\\build\\windows\\runner\\Release\\active_web_bg.exe";
   static String dllLibPath = "lib/dll";
   static final _dylib = ffi.DynamicLibrary.open("$dllLibPath/bg_01.dll");
   static final ChangeBackground _changeBackground = _dylib.lookup<ffi.NativeFunction<ChangeBackgroundFFI>>("changeBackground").asFunction();
@@ -90,10 +91,10 @@ class DataUtil{
               onPressed: () {
                 int uniTimeId = DataUtil.getNowMicroseconds();
                 String suffix = calImgSuffix(imgUrl);
-                DataUtil.dio.download(imgUrl, "${DataUtil.BATH_PATH}/image/${uniTimeId}${suffix}")
+                DataUtil.dio.download(imgUrl, "${DataUtil.BATH_PATH}/images/$uniTimeId$suffix")
                     .then((value){
                   Timer(const Duration(milliseconds: 10),(){
-                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/image/${uniTimeId}$suffix");
+                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/images/$uniTimeId$suffix");
                   });
                 });
               },
@@ -194,11 +195,15 @@ class DataUtil{
   /// 这里需要判断此时是否是设置动态壁纸，用来启动active_web_bg进程
   static void setDynamicBgUrl(String url){
     Win32Util.updateActiveBgWebHWnd();
-    developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
+    // developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
     if(Win32Util.hWndActiveWeb == 0){
       startActiveBgWebProc();
     }
-    dynamicBgUrl  = url;
+    /// 这里如果出现错误，检测不到
+    dynamicBgUrl = url;
+    Future.microtask((){
+      config.saveConfig();
+    });
   }
   /// 启动壁纸展示进程（这个进程可以是一个浏览器也可以是一个视频播放器）
   /// 使用浏览器的话，html5规范不允许自动播放又声音的视频，使用视频播放器的话可以，但是视频播放器的话，功能就少了点
@@ -206,8 +211,9 @@ class DataUtil{
   static bool startActiveBgWebProc(){
     // 需要判断当前的壁纸的类型
     Future.microtask(() async{
-      Process.run(ACTIVE_WEB_BG_PATH, []);
+      // 这段代码其实没必要
       Win32Util.createWorkerW();
+      Process.run(ACTIVE_WEB_BG_PATH, []);
       Timer.periodic(const Duration(milliseconds: 300), (timer) {
         if (Win32Util.setActiveBgToParentWorkerW()){
           timer.cancel();
@@ -216,35 +222,4 @@ class DataUtil{
     });
     return true;
   }
-
-  /// 将展示动态壁纸的窗口放在worderW下面
-  static bool setActiveBgWndWebPos(){
-    return true;
-  }
 }
-
-/**
- * 经过测试，不需要headers
- */
-
-/// 动漫基地址 https://bizhi.cheetahfun.com/dn/c2d/
-/// 动漫第二页 https://bizhi.cheetahfun.com/dn/c2d/p2
-///
-/// 风景      https://bizhi.cheetahfun.com/dn/c1d/p2
-/// 科技      https://bizhi.cheetahfun.com/dn/c7d/
-/// 搜索      https://bizhi.cheetahfun.com/search.html?search=%E5%8A%A8%E6%BC%AB&page=1
-///
-///
-/// 获取种类  document.querySelectorAll("li ul>li>a")
-/// 分类(/首页)/搜索获取链接  document.querySelectorAll("section>ul>li a")
-/// 获取视频里面的父节点的孩子 document.querySelector("main video").parentElement.childNodes //cou=2
-///
-///
-/// 国内可访问
-
-
-/**
- * package:html 0.15.0 0.15.1 的 bug
- * querySelectorAll("section>ul>li>div>a")  ->得到结果
- * querySelectorAll("section>ul>li a")      ->什么都没有
- */
