@@ -6,11 +6,11 @@
 
 
 <div style="display: flex; justify-content: space-around">
-    <a>点击前往下载</a>
-    <a>效果展示</a>
+    <a href="/lib/assets/release/activeBgSetup.exe">点击前往下载</a>
+[comment]: <> (    <a href="">效果展示</a>)
 </div>
 
-[//]: # "注释"
+[comment]: <> ("注释")
 
 ## 内容
 - [关于/效果](#关于/效果)
@@ -39,7 +39,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 #### 开启任务栏透明
 <img src="/lib/assets/description/start_taskbar_transparent.png" width="800">
 
-#### 推荐
+#### 推荐静态壁纸
 <img src="/lib/assets/description/recommend.png" width="800">
 
 #### 设置壁纸定时切换
@@ -62,7 +62,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
 <img src="/lib/assets/description/XXdesk_software_usage_of_CPU_and_memory.png" width="800"/>
 
-> 某软件CPU以及内存占用情况
+> XXX软件CPU以及内存占用情况
 
 <br />
 
@@ -78,7 +78,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
 ## 下载
 
-<a href="">点击前往下载</a>
+<a href="/lib/assets/release/activeBgSetup.exe">点击前往下载</a>
 
 ## 支持
 你是桌面美化的热爱者吗，下面的选择可以让你贡献一份力量
@@ -86,4 +86,4 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 欢迎加入来贡献代码
 
 #### 建议和 bug 提交
-如果您在使用的过程中有好的建议或者发现了错误，提出方便改善activeBg
+如果您在使用的过程中有好的建议或者发现了错误，可以在issue提出或者联系作者方便改善activeBg
