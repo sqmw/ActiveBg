@@ -49,4 +49,5 @@ app.*.map.json
 /web/
 /android/
 /lib/assets/images/*
+/lib/assets/videos/*
 test.md

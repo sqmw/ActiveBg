@@ -1,7 +1,7 @@
 
 <p align="center">
   <img alt="Logo" src="/lib/assets/logo.svg" width="200" style="background-color: #a99a9a"/>
-  <h2 style="text-align: center">activeBg</h2>
+  <h2 align="center">activeBg</h2>
 </p>
 
 
@@ -13,24 +13,26 @@
 [//]: # "注释"
 
 ## 内容
-- [关于](#关于)
+- [关于](#关于/效果)
 - [使用](#使用)
 - [特点](#特点)
 - [下载](#下载)
 - [支持](#支持)
 
-## 关于
-<img src="../assets/images/1672324183496263.jpg" width="800"/>
+## 关于/效果
+<img src="/lib/assets/description/dynamic.gif" width="800"/>
+<img src="/lib/assets/description/static.gif" width="800"/>
+
 
 activeBg 是拥有各种类型的壁纸选择，并且开源免费的软件
 
-<img src="../assets/images/1672324860150398.jpg" width="800"/>
+<img src="/lib/assets/description/timeChange.gif" width="800"/>
 
 activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
 #### 加入讨论:
-* <a href="https://www.reddit.com/r/LivelyWallpaper/">Gitee</a>
-* <a href="https://gitee.com/s99q/ActiveBg/issues">Github</a>
+* <a href="https://gitee.com/s99q/ActiveBg/issues">Gitee</a>
+* <a href="https://github.com/sqmw/ActiveBg/issues">Github</a>
 
 ## 使用
 
@@ -52,7 +54,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 ## 特点
 *轻量级(安装包体积小、启动之后占用CPU以及内存均很小)*
 
-[//]: # "这里需要放置CPU以及内存的图片"
+[comment]: <> ("这里需要放置CPU以及内存的图片")
 #### 图片或者动图展示
 <img src="/lib/assets/description/activeBg_usage_of_CPU_and_memory.png" width="800"/>
 
