@@ -1,15 +1,16 @@
 
-<p style="text-align: center">
+<p align="center">
   <img alt="Logo" src="/lib/assets/logo.svg" width="200" style="background-color: #a99a9a"/>
   <h2 style="text-align: center">activeBg</h2>
 </p>
+
 
 <div style="display: flex; justify-content: space-around">
     <a>点击前往下载</a>
     <a>效果展示</a>
 </div>
 
-[//]: # (注释)
+[//]: # "注释"
 
 ## 内容
 - [关于](#关于)
@@ -51,7 +52,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 ## 特点
 *轻量级(安装包体积小、启动之后占用CPU以及内存均很小)*
 
-[//]: # (这里需要放置CPU以及内存的图片)
+[//]: # "这里需要放置CPU以及内存的图片"
 #### 图片或者动图展示
 <img src="/lib/assets/description/activeBg_usage_of_CPU_and_memory.png" width="800"/>
 
