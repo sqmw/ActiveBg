@@ -6,8 +6,7 @@
 
 
 <div style="display: flex; justify-content: space-around">
-    <a href="/lib/assets/release/activeBgSetup.exe">点击前往下载</a>
-
+    <a href="/lib/assets/release">点击前往下载</a>
 </div>
 
 [comment]: <> ("注释")
