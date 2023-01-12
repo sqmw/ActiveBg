@@ -15,7 +15,7 @@ class Personal extends StatefulWidget {
 
 class _PersonalState extends State<Personal> {
   late TextEditingController _keyController;
-  late String _searchResource = "设置资源";
+  late final String _searchResource = "设置资源";
   late Size _size;
   late final ScrollController _scrollController;
   List<ListTile> _listTileList= [];

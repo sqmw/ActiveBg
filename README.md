@@ -13,7 +13,7 @@
 [//]: # "注释"
 
 ## 内容
-- [关于](#关于/效果)
+- [关于/效果](#关于/效果)
 - [使用](#使用)
 - [特点](#特点)
 - [下载](#下载)
@@ -26,7 +26,7 @@
 
 activeBg 是拥有各种类型的壁纸选择，并且开源免费的软件
 
-<img src="/lib/assets/description/timeChange.gif" width="800"/>
+<img src="/lib/assets/description/local_net_resource.gif" width="800"/>
 
 activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
@@ -70,7 +70,6 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 * 提供了多种多样的壁纸选择，可以个性化设置
 * 经过测试在动态桌面的时候，内存占用仅仅45M，CPU占用更低
 #### <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">WebView2</a>
-<img src="../assets/images/1672325302833096.jpg" width="800"/>
 
 * 加载Html文件或者一个url链接地址作为壁纸
 * 可以支持运行JS脚本(暂未开放接口)
