@@ -68,7 +68,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
 * 任务栏目前借助开源项目<a href="https://github.com/TranslucentTB/TranslucentTB">TranslucentTB</a>实现
 * 提供了多种多样的壁纸选择，可以个性化设置
-* 经过测试在动态桌面的时候，内存占用仅仅45M，CPU占用更低
+* 经过测试在动态桌面的时候，内存占用仅仅45MCPU占用更低
 #### <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">WebView2</a>
 
 * 加载Html文件或者一个url链接地址作为壁纸
@@ -81,9 +81,10 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 <a href="/lib/assets/release">点击前往下载</a>
 
 ## 支持
-你是桌面美化的热爱者吗，下面的选择可以让你贡献一份力量
+您是桌面美化的热爱者吗，下面的选择可以让你贡献一份力量
+
 #### 程序员
-欢迎加入来贡献代码
+欢迎加入来贡献代码，或者接下来的开发中
 
 #### 建议和 bug 提交
 如果您在使用的过程中有好的建议或者发现了错误，可以在issue提出或者联系作者方便改善activeBg
