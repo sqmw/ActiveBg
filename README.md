@@ -7,7 +7,7 @@
 
 <div style="display: flex; justify-content: space-around">
     <a href="/lib/assets/release/activeBgSetup.exe">点击前往下载</a>
-[comment]: <> (    <a href="">效果展示</a>)
+
 </div>
 
 [comment]: <> ("注释")
@@ -78,7 +78,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 
 ## 下载
 
-<a href="/lib/assets/release/activeBgSetup.exe">点击前往下载</a>
+<a href="/lib/assets/release">点击前往下载</a>
 
 ## 支持
 你是桌面美化的热爱者吗，下面的选择可以让你贡献一份力量
