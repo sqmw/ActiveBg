@@ -6,12 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as html_dom;
 
 import '../../utils/DataUtil.dart';
-import '../utils/ImageView.dart';
+import '../viewUtils/ImageView.dart';
 
 /// 这个表示点击任何一个页面进入之后的结果以及搜索的结果（实际上都是搜索结果）
 /// 搜索的时候因为结果可能是动态的可能是静态的，所以展示的时候，只展示一种结果
-
-
 class DynamicSearchSet extends StatefulWidget {
   const DynamicSearchSet(this._searchUrl,{Key? key}) : super(key: key);
   final String _searchUrl;
@@ -43,7 +41,6 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
     }
   }
   final List<Widget> _searchResultList = [];
-
 
   @override
   void initState() {
@@ -79,7 +76,6 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
   // region
   void loadResearchInfo(dynamic data) {
     List<html_dom.Element> eleList = DataUtil.getEleListFromStrBySelector("$data", DataUtil.QUERY_VIDEO_PAGE_LIST);
-    log("length: ${eleList.length}");
     if(eleList.isEmpty){
       /// 表示没有更多的了
       _resultEnd = true;
@@ -107,11 +103,9 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
             Expanded(
                 child: TextButton(
                   onPressed: () {
-                    //log("${element.attributes["href"]}");
                     DataUtil.dio.get("${element.attributes["href"]}")
                         .then((res){
                       html_dom.Element videoEle = DataUtil.getEleListFromStrBySelector("${res.data}", DataUtil.QUERY_VIDEO)[0];
-                      //log(videoEle.attributes["src"]!);
                       DataUtil.setDynamicBgUrl(videoEle.attributes["src"]!);
                     })
                         .catchError((err){
@@ -157,7 +151,7 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
           if(snapshot.connectionState == ConnectionState.done){
             if(snapshot.hasData){
               /// 加载 _searchResultList
-              log("url: " + widget._searchUrl + _getSearchContextByPage());
+              //log("url: " + widget._searchUrl + _getSearchContextByPage());
               loadResearchInfo(snapshot.data);
               return GridView.count(
                 controller: _scrollController,

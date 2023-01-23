@@ -5,7 +5,7 @@ import 'dart:developer';
 import 'package:html/dom.dart' as html_dom;
 
 import '../../utils/DataUtil.dart';
-import '../utils/ImageView.dart';
+import '../viewUtils/ImageView.dart';
 import 'DynamicSearch.dart';
 /// 动态壁纸的显示推荐和分类的部分，分类和推荐共同使用一个Future，因此封装在一起
 
@@ -57,7 +57,6 @@ class _RecommendAndClassifySetState extends State<RecommendAndClassifySet> imple
                       html_dom.Element videoEle = DataUtil.getEleListFromStrBySelector("${res.data}", DataUtil.QUERY_VIDEO)[0];
                       //log(videoEle.attributes["src"]!);
                       DataUtil.setDynamicBgUrl(videoEle.attributes["src"]!);
-                      log(DataUtil.dynamicBgUrl+ " -> right");
                     })
                     .catchError((err){
 
@@ -152,9 +151,13 @@ class SetContent extends StatelessWidget {
           children: [
             const Divider(
               color: Colors.red,
-              height: 2,
+              thickness: 3,
             ),
             const Text("推荐",textAlign: TextAlign.center,),
+            const Divider(
+              color: Colors.red,
+              thickness: 3,
+            ),
             SizedBox(
               height: _size.height * 1 - 50,
               width: _size.width,
@@ -167,10 +170,14 @@ class SetContent extends StatelessWidget {
             ),
             const Divider(
               color: Colors.red,
-              height: 2,
+              thickness: 3,
             ),
             /// 分类
             const Text("分类", textAlign: TextAlign.center,),
+            const Divider(
+              color: Colors.red,
+              thickness: 3,
+            ),
             SizedBox(
               width: _size.width,
               height: _size.width / 4 * 54/99 * (classificationList.length / 4).ceil() + 100,

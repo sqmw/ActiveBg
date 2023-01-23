@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:math';
 import 'dart:ffi' as ffi;
 import 'package:active_bg/utils/Win32Util.dart';
@@ -11,16 +12,25 @@ import 'dart:developer' as developer;
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html_dom;
 
-import '../component/utils/ImageView.dart';
+import '../component/viewUtils/ImageView.dart';
 import './FileDirUtil.dart' as file_dir show getPathFromIndex;
 import 'ConfigUtil.dart' as config show saveConfig;
+import 'NetUtil.dart' as net_util show getUnusedPort;
 
 typedef ChangeBackgroundFFI = ffi.Void Function(ffi.Pointer<Utf8>);
 typedef ChangeBackground = void Function(ffi.Pointer<Utf8>);
-// TranslucentTB
 class DataUtil{
+  // local 采用了动态端口号
+  // static int portLocalDynamicBg = 23576;
+
+  /// 端口号相关的信息
+  /// 本地的动态壁纸(mp4)的服务器的端口号
+  static const portBridgeOfBg = 4444;
+  /// 用来表示UI的透明度
+  static double opacity = 100;
   // 用来存储数据的基本路径，目前仅仅可能需要修改的配置属性就只有这个
-  static String BATH_PATH = "";
+  /// 这个位置在电脑上面运行之后就不能修改
+  static String BASE_PATH = "";
   static String ACTIVE_WEB_BG_PATH = "F:\\language\\flutter\\active_web_bg\\build\\windows\\runner\\Release\\active_web_bg.exe";
   static String dllLibPath = "lib/dll";
   static final _dylib = ffi.DynamicLibrary.open("$dllLibPath/bg_01.dll");
@@ -39,9 +49,11 @@ class DataUtil{
   static const QUERY_VIDEO_PAGE_LIST = "section>ul>li>div>a";
   static const QUERY_VIDEO = "main video";
   static final Random _random = Random();
+  /// 设置动态桌面的 标题
+  static const activeDynamicBgTitle = "active_dynamic_bg";
+
   /// 现在壁纸的类型是动态的还是静态的
   /// 应该通过判断是否能够获取到相应的窗口的句柄来判定壁纸的状态
-
   static int getRandomInt({int max = MAX_IMG_FIRST}){
     return _random.nextInt(max);
   }
@@ -91,10 +103,10 @@ class DataUtil{
               onPressed: () {
                 int uniTimeId = DataUtil.getNowMicroseconds();
                 String suffix = calImgSuffix(imgUrl);
-                DataUtil.dio.download(imgUrl, "${DataUtil.BATH_PATH}/images/$uniTimeId$suffix")
+                DataUtil.dio.download(imgUrl, "${DataUtil.BASE_PATH}/images/$uniTimeId$suffix")
                     .then((value){
                   Timer(const Duration(milliseconds: 10),(){
-                    DataUtil.changeStaticBackground("${DataUtil.BATH_PATH}/images/$uniTimeId$suffix");
+                    DataUtil.changeStaticBackground("${DataUtil.BASE_PATH}/images/$uniTimeId$suffix");
                   });
                 });
               },
@@ -163,7 +175,7 @@ class DataUtil{
   }
 
   //region
-  static const IMG_TYPE_LIST = [
+  static const imgTypeList = [
     ".jpg",
     ".png",
     ".bmp",
@@ -182,7 +194,7 @@ class DataUtil{
   //endregion
 
   static String calImgSuffix(String imgUrl){
-    for(var item in IMG_TYPE_LIST){
+    for(var item in imgTypeList){
       if(imgUrl.endsWith(item)){
         return item;
       }
@@ -191,20 +203,8 @@ class DataUtil{
   }
 
   static String dynamicBgUrl = "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview/101d3f1af19562aa17ed65790c04c1b0_preview.mp4";
-  /// 通过端口来设置动态壁纸的地址
-  /// 这里需要判断此时是否是设置动态壁纸，用来启动active_web_bg进程
-  static void setDynamicBgUrl(String url){
-    Win32Util.updateActiveBgWebHWnd();
-    // developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
-    if(Win32Util.hWndActiveWeb == 0){
-      startActiveBgWebProc();
-    }
-    /// 这里如果出现错误，检测不到
-    dynamicBgUrl = url;
-    Future.microtask((){
-      config.saveConfig();
-    });
-  }
+
+
   /// 启动壁纸展示进程（这个进程可以是一个浏览器也可以是一个视频播放器）
   /// 使用浏览器的话，html5规范不允许自动播放又声音的视频，使用视频播放器的话可以，但是视频播放器的话，功能就少了点
   /// 在开启这个进程之后，需要将这个进程设置在workerW下面
@@ -221,5 +221,49 @@ class DataUtil{
       });
     });
     return true;
+  }
+
+  /// 通过端口来设置动态壁纸的地址,这个地址的类型可以是path，以及link等
+  /// 这里需要判断此时是否是设置动态壁纸，用来启动active_web_bg进程
+  /// 需要判断是不是来自本地的资源
+  static Future<void> setDynamicBgUrl(String urlOrFilePath)async{
+    Win32Util.updateActiveBgWebHWnd();
+    // developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
+    if(Win32Util.hWndActiveWeb == 0){
+      startActiveBgWebProc();
+    }
+    /// 表示是netResource
+    if(urlOrFilePath.startsWith("http")){
+      /// 这里如果出现错误，检测不到
+      dynamicBgUrl = urlOrFilePath;
+    }else{
+      /// 启动这个本地壁纸的线程
+      int portLocalDynamicBg = await startLocalActiveBg(urlOrFilePath);
+      dynamicBgUrl = "http://localhost:$portLocalDynamicBg?r=${getRandomInt(max: 10000)}";
+    }
+    Future.microtask((){
+      config.saveConfig();
+    });
+  }
+
+  /// C:/Users/19519/Desktop/videos/bg.mp4
+  /// 开启一个返回视频的服务器
+  static late HttpServer localActiveBgHttpServer;
+  static Future<int> startLocalActiveBg(String path)async{
+    // 没有被占用
+    int portLocalDynamicBg;
+    // if((portLocalDynamicBg = await net_util.getUnusedPort(0)) != -1);
+    portLocalDynamicBg = await net_util.getUnusedPort(0);
+    localActiveBgHttpServer = await HttpServer.bind("localhost", portLocalDynamicBg);
+    File file = File(path);
+    /// 通过测试，这个位置的代码也必须放在一个 future 任务里面
+    Future.microtask(()async{
+      HttpRequest httpRequest = await localActiveBgHttpServer.first;
+      httpRequest.response
+        ..headers.add("Content-Type", "video/mp4") /// 添加响应行
+        ..write(String.fromCharCodes(file.readAsBytesSync())) /// String.fromCharCodes 不用的话返回的及时int的list [...]
+        ..close();
+    });
+    return portLocalDynamicBg;
   }
 }

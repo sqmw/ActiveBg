@@ -1,7 +1,24 @@
 {
   "BATH_PATH": "./assets",
-  "ACTIVE_WEB_BG_PATH": "../active-bg-web/active_web_bg.exe",
+  "ACTIVE_WEB_BG_PATH": "../active_dynamic_bg/active_dynamic_bg.exe",
   "dynamicBgUrl": "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview/101d3f1af19562aa17ed65790c04c1b0_preview.mp4",
   "translucentTBPath": "../TranslucentTB/TranslucentTB.exe",
-  "dllLibPath": "../dll"
+  "dllLibPath": "../dll",
+  "isActiveNow": false,
+  "volume": 1.0,
+  "opacity": 200,
+  "localImg": "",
+  "localVideo": "",
+  "unreachableWebsite": [
+    "duba.com",
+    "ddooo.com",
+    "51testing.com",
+    "product.pchome.net",
+    "http://www.ijinshan.com/",
+    "https://www.liebao.cn/",
+    "http://www.drivergenius.com/",
+    "http://soft.duba.com/",
+    "http://www.52hy.52pcfree.com/",
+    "https://www.duba.com/"
+  ]
 }

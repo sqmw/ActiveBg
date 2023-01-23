@@ -1,3 +1,4 @@
+import 'dart:async';
 import "dart:io";
 import 'dart:convert';
 
@@ -6,7 +7,13 @@ import 'package:active_bg/utils/TranslucentTBUtil.dart';
 
 import 'FileDirUtil.dart' as file_dir_util show getPathFromIndex;
 
+
+/// 部分配置文件在 DataUtil 里面
+String imageDirPath = "";
+
 Map<String,dynamic> _config = {};
+bool configCanSave = true;
+late Timer saveTimer;
 
 File getConfigFile(){
   // 这个config是发行时候的，对应utils包里面的
@@ -29,37 +36,49 @@ Future<void> loadConfig() async {
     configStr = configFile.readAsStringSync();
     _config = json.decode(configStr);
     //${file_dir.getPathFromIndex(Directory("").absolute.path, 0)}/assets
+    /// 表示的是在初始启动的情况下，通过base_path来判定是不是第一次启动
     if(_config["BATH_PATH"].startsWith("./")){
-      DataUtil.BATH_PATH = "${file_dir_util.getPathFromIndex(Directory("").absolute.path, 0)}/assets";
+      DataUtil.BASE_PATH = "${file_dir_util.getPathFromIndex(Directory("").absolute.path, 0)}/assets";
+      imageDirPath = "${DataUtil.BASE_PATH}/images";
     }else{
       if(_config["BATH_PATH"].startsWith("lib")){
-        DataUtil.BATH_PATH = "${file_dir_util.getPathFromIndex(Directory("").absolute.path, 0)}/${_config["BATH_PATH"]}";
+        DataUtil.BASE_PATH = "${file_dir_util.getPathFromIndex(Directory("").absolute.path, 0)}/${_config["BATH_PATH"]}";
+        imageDirPath = "${DataUtil.BASE_PATH}/images";
       }else{
-        DataUtil.BATH_PATH = _config["BATH_PATH"];
+        DataUtil.BASE_PATH = _config["BATH_PATH"];
+        imageDirPath = _config["imageDirPath"];
       }
     }
     DataUtil.ACTIVE_WEB_BG_PATH =  _config["ACTIVE_WEB_BG_PATH"];
     DataUtil.dynamicBgUrl = _config["dynamicBgUrl"];
     TranslucentTBUtil.translucentTBPath = _config["translucentTBPath"];
     DataUtil.dllLibPath = _config["dllLibPath"];
+    DataUtil.opacity = _config["opacity"].toDouble();
   }
 }
 
+/// 应该放在一个 future 里面执行，这个需要做防抖
 Future<void> saveConfig() async {
-  File configFile = getConfigFile();
-  _config["BATH_PATH"] = DataUtil.BATH_PATH;
-  _config["ACTIVE_WEB_BG_PATH"] = DataUtil.ACTIVE_WEB_BG_PATH;
-  _config["dynamicBgUrl"] = DataUtil.dynamicBgUrl;
-  _config["translucentTBPath"] = TranslucentTBUtil.translucentTBPath;
-  _config["dllLibPath"] = DataUtil.dllLibPath;
-  IOSink ioSink = configFile.openWrite();
-  ioSink.write(json.encode(_config));
-  await ioSink.flush();
-  await ioSink.close();
-  // Future.microtask(()async{
-  //   await ioSink.done;
-  //   ioSink.close();
-  // });
+  if(configCanSave){
+    configCanSave = false;
+    File configFile = getConfigFile();
+    _config["BATH_PATH"] = DataUtil.BASE_PATH;
+    _config["ACTIVE_WEB_BG_PATH"] = DataUtil.ACTIVE_WEB_BG_PATH;
+    _config["dynamicBgUrl"] = DataUtil.dynamicBgUrl;
+    _config["translucentTBPath"] = TranslucentTBUtil.translucentTBPath;
+    _config["dllLibPath"] = DataUtil.dllLibPath;
+    _config["opacity"] = DataUtil.opacity;
+    _config["imageDirPath"] = imageDirPath;
+    IOSink ioSink = configFile.openWrite();
+    ioSink.write(json.encode(_config));
+    await ioSink.flush();
+    await ioSink.close();
+
+    saveTimer = Timer(
+      const Duration(microseconds: 500),(){
+      configCanSave = true;
+    });
+  }
 }
 
 /// 初始化运行使用的config文件

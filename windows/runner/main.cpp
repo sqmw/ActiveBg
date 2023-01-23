@@ -30,6 +30,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE instance, _In_opt_ HINSTANCE prev,
   if (!window.CreateAndShow(L"active_bg", origin, size)) {
     return EXIT_FAILURE;
   }
+
   window.SetQuitOnClose(true);
 
   ::MSG msg;
