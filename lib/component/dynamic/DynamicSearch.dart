@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:developer';
 
-import 'package:active_bg/interfaces/Preview.dart';
+import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as html_dom;
 
+import 'package:active_bg/interfaces/Preview.dart';
 import '../../utils/DataUtil.dart';
-import '../viewUtils/ImageView.dart';
+import 'package:active_bg/component/viewUtils/ImageView.dart';
 
 /// 这个表示点击任何一个页面进入之后的结果以及搜索的结果（实际上都是搜索结果）
 /// 搜索的时候因为结果可能是动态的可能是静态的，所以展示的时候，只展示一种结果
@@ -155,7 +156,7 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
               loadResearchInfo(snapshot.data);
               return GridView.count(
                 controller: _scrollController,
-                childAspectRatio: 99/(54 + 9),
+                childAspectRatio: Win32Util.whRate,
                 crossAxisCount: 3,
                 mainAxisSpacing: 20,
                 children: _searchResultList,
@@ -175,7 +176,7 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
     }else{
       return GridView.count(
         controller: _scrollController,
-        childAspectRatio: 99/(54 + 9),
+        childAspectRatio: Win32Util.whRate,
         crossAxisCount: 3,
         mainAxisSpacing: 20,
         children: _searchResultList,

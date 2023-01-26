@@ -29,6 +29,10 @@
 
 > 待完善：虽然能够设置壁纸和实现动效，但是没有设计开机启动，在没有网络的情况下，设置好的壁纸，在开机之后就不能使用
 
+#### 通信
+
+> 通信通过TCP Socket协议完成
+
 
 ### 2.0
 #### 动态壁纸
@@ -55,4 +59,18 @@
 
 
 > 待完善：实现动态壁纸余用户的交互
+
+#### 进程通信
+
+> 通过http协议实现
+
+```dart
+/// 规范一下和activeDynamicBg通信的格式
+/// {
+///   type: url | script  {url: 1, script: 0}
+///   action: changeBg | executeScript | getImgFromVideo {changeBg: 0,executeScript:1, getImgFromVideo: 2}
+///   data: XXX
+/// }
+///
+```
 

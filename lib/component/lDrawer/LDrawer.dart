@@ -42,6 +42,14 @@ class _LDrawerState extends State<LDrawer> {
                 child: const Text("关闭动态壁纸"),
               )
           ),
+          Expanded(
+              flex: 1,
+              child: TextButton(
+                onPressed: () {
+                },
+                child: const Text("动效"),
+              )
+          ),
           const Expanded(
               flex: 1,
               child: ActiveBgTransparent()

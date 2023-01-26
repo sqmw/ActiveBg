@@ -1,4 +1,5 @@
 import 'package:active_bg/component/homeMain/children/linkAnalysis/children/PageSwitchController.dart';
+import 'package:active_bg/utils/DataUtil.dart';
 import 'package:flutter/material.dart';
 
 /// 只能是真正的页码变化的时候才进行切换
@@ -50,7 +51,10 @@ class _PageSwitchBarState extends State<PageSwitchBar> {
           },
           icon: const Icon(Icons.navigate_before),
         ),
-        Text("${widget.pageSwitchController.currentPageIndex}/${widget.pageSwitchController.countAllPages}"),
+        /// 当前页
+        Text("${widget.pageSwitchController.currentPageIndex}/"),
+        /// 页总数
+        Text("${widget.pageSwitchController.countAllPages}",style: const TextStyle(color: Colors.red)),
         /// 下一页
         IconButton(
           onPressed: (){

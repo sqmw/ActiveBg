@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:ffi';
 import 'package:active_bg/utils/DataUtil.dart';
 import 'package:ffi/ffi.dart';
@@ -10,18 +9,18 @@ import "package:win32/win32.dart";
 class Win32Util{
   static int _workerWHexHandle = 0;
   static bool isFullScreen = false;
-  static const whRate = 99/54;
+  static const whRate = 99/(54 + 9);
   static Pointer<RECT> activeBgBeforeRect = malloc<RECT>();
   /// 表示的显示动态壁纸的窗口，需要维护这个句柄是最新的状态
-  static int hWndActiveWeb = FindWindow(nullptr, TEXT(DataUtil.activeDynamicBgTitle));
+  static int hWndActiveDynamicBg = FindWindow(nullptr, TEXT(DataUtil.activeDynamicBgTitle));
   /// 深度搜索找到activeBg的句柄
   static void updateActiveBgWebHWnd(){
-    hWndActiveWeb = FindWindow(nullptr, TEXT(DataUtil.activeDynamicBgTitle));
-    if(hWndActiveWeb == 0){
+    hWndActiveDynamicBg = FindWindow(nullptr, TEXT(DataUtil.activeDynamicBgTitle));
+    if(hWndActiveDynamicBg == 0){
       if(_workerWHexHandle == 0){
         createWorkerW();
       }
-      hWndActiveWeb = FindWindowEx(Win32Util.enumGetWorkerWDescHandle(), 0, nullptr, TEXT(DataUtil.activeDynamicBgTitle));
+      hWndActiveDynamicBg = FindWindowEx(Win32Util.enumGetWorkerWDescHandle(), 0, nullptr, TEXT(DataUtil.activeDynamicBgTitle));
     }
   }
   static int _enumWindowsProc(int hWnd,int lParam){
@@ -52,6 +51,7 @@ class Win32Util{
       return;
     }
     int count = 1;
+    /// 其实就是 null
     Pointer<IntPtr> result  = Pointer.fromAddress(0);
     SendMessageTimeout(FindWindow(TEXT("Progman"), nullptr),  0x052C, 0, 0, SMTO_NORMAL, 1000, result);
     Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -64,24 +64,24 @@ class Win32Util{
   }
 
   static bool setActiveBgToParentWorkerW({int parent = 0}){
-    /// 去掉外边框
     updateActiveBgWebHWnd();
-    int style = GetWindowLongPtr(hWndActiveWeb, GWL_STYLE);
+    /// 去掉外边框
+    int style = GetWindowLongPtr(hWndActiveDynamicBg, GWL_STYLE);
     style = style & ~WS_CAPTION & ~WS_SYSMENU & ~WS_SIZEBOX;
-    SetWindowLongPtr(hWndActiveWeb, GWL_STYLE, style);
+    SetWindowLongPtr(hWndActiveDynamicBg, GWL_STYLE, style);
     /// 设置父窗口以及全屏显示
-    return SetParent(hWndActiveWeb, enumGetWorkerWDescHandle()) != 0 &&
-    ShowWindow(hWndActiveWeb, SW_MAXIMIZE) != 0;
+    return SetParent(hWndActiveDynamicBg, enumGetWorkerWDescHandle()) != 0 &&
+    ShowWindow(hWndActiveDynamicBg, SW_MAXIMIZE) != 0;
   }
 
   /// 销毁一个窗口在内存中的进程
   static void destroyActiveBgWin(){
-    if(hWndActiveWeb == 0){
+    if(hWndActiveDynamicBg == 0){
       updateActiveBgWebHWnd();
     }
-    PostMessage(hWndActiveWeb,WM_DESTROY,0,0);
+    PostMessage(hWndActiveDynamicBg,WM_DESTROY,0,0);
     /// 销毁之后置为 0
-    hWndActiveWeb = 0;
+    hWndActiveDynamicBg = 0;
   }
 
   static int hWndActiveBg = FindWindow(nullptr, TEXT("active_bg"));

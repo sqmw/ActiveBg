@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'component/MyApp.dart';
 
 import 'package:active_bg/utils/ConfigUtil.dart' as config;
+import 'package:active_bg/utils/NetUtil.dart' as net_util show Data, ResponseActions, ReqType;
 
 /// 调试的时候如果已经启动了 active_dynamic_bg，也是可以的
 void main() async{
@@ -28,7 +29,7 @@ void main() async{
   );
   runApp(const MyApp());
 
-  /// 加载配置，设置窗口的透明度，在程序最开始启动的时候就设置透明度，在C++代码里面
+  /// 加载配置，设置窗口的透明度，在程序最开始启动的时候就设置透明度，在 C++ 代码里面
   Future.microtask(()async{
     await config.loadConfig();
     Win32Util.setActiveBgTransparent(DataUtil.opacity.toInt());
@@ -37,22 +38,28 @@ void main() async{
 
   /// 启动端口，进行通信
   Future.microtask(() async {
-    /// 这个是一个版本的
-    // ServerSocket serverSocket = await ServerSocket.bind("localhost", 4444);
-    // serverSocket.listen((Socket clientSocket) async {
-    //   clientSocket.write(DataUtil.dynamicBgUrl);
-    //   await clientSocket.flush();
-    //   await clientSocket.close();
-    // });
     /// 版本2通过httpServer实现的
     HttpServer httpServer = await HttpServer.bind("localhost", DataUtil.portBridgeOfBg);
     await for(HttpRequest httpRequest in httpServer){
+      var reqBody = await utf8.decoder.bind(httpRequest).join();
+      var obj = json.decode(reqBody);
+      switch(obj["type"]){
+        case net_util.ReqType.reqRest:{
+          break;
+        }
+        /// 表示fronted发来了base64图片
+        case net_util.ReqType.imageBase64:{
+          net_util.Data.base64SendPort.send(obj["data"]);
+          break;
+        }
+      }
       httpRequest.response
-        ..write (json.encode({
-          "type":1,
-          "path":DataUtil.dynamicBgUrl
-        }))
+        ..write (json.encode(
+          net_util.Data.communicationMsg
+        ))
         ..close();
+      /// 执行完之后就置空
+      net_util.Data.setCommunicationMsg(action: net_util.ResponseActions.rest, data: "");
     }
   });
 }

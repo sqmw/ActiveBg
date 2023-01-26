@@ -16,6 +16,7 @@ import '../component/viewUtils/ImageView.dart';
 import './FileDirUtil.dart' as file_dir show getPathFromIndex;
 import 'ConfigUtil.dart' as config show saveConfig;
 import 'NetUtil.dart' as net_util show getUnusedPort;
+import 'package:active_bg/utils/NetUtil.dart' as net_util show Data, ResponseActions;
 
 typedef ChangeBackgroundFFI = ffi.Void Function(ffi.Pointer<Utf8>);
 typedef ChangeBackground = void Function(ffi.Pointer<Utf8>);
@@ -56,6 +57,10 @@ class DataUtil{
   /// 应该通过判断是否能够获取到相应的窗口的句柄来判定壁纸的状态
   static int getRandomInt({int max = MAX_IMG_FIRST}){
     return _random.nextInt(max);
+  }
+
+  static Color getRandomColor(){
+    return Color.fromRGBO(getRandomInt(max: 256), getRandomInt(max: 256), getRandomInt(max: 256), 1);
   }
 
   static void changeStaticBackground(String imgPath){
@@ -208,7 +213,7 @@ class DataUtil{
   /// 启动壁纸展示进程（这个进程可以是一个浏览器也可以是一个视频播放器）
   /// 使用浏览器的话，html5规范不允许自动播放又声音的视频，使用视频播放器的话可以，但是视频播放器的话，功能就少了点
   /// 在开启这个进程之后，需要将这个进程设置在workerW下面
-  static bool startActiveBgWebProc(){
+  static bool startActiveBgDynamicBgProc(){
     // 需要判断当前的壁纸的类型
     Future.microtask(() async{
       // 这段代码其实没必要
@@ -229,8 +234,8 @@ class DataUtil{
   static Future<void> setDynamicBgUrl(String urlOrFilePath)async{
     Win32Util.updateActiveBgWebHWnd();
     // developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
-    if(Win32Util.hWndActiveWeb == 0){
-      startActiveBgWebProc();
+    if(Win32Util.hWndActiveDynamicBg == 0){
+      startActiveBgDynamicBgProc();
     }
     /// 表示是netResource
     if(urlOrFilePath.startsWith("http")){
@@ -241,6 +246,10 @@ class DataUtil{
       int portLocalDynamicBg = await startLocalActiveBg(urlOrFilePath);
       dynamicBgUrl = "http://localhost:$portLocalDynamicBg?r=${getRandomInt(max: 10000)}";
     }
+
+    ///设置需要返回的数据
+    net_util.Data.setCommunicationMsg(action: net_util.ResponseActions.changeBg, data: dynamicBgUrl);
+
     Future.microtask((){
       config.saveConfig();
     });

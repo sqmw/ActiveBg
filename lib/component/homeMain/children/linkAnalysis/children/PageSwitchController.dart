@@ -24,6 +24,7 @@ class PageSwitchController  {
     _stateOwner = value;
   }
 
+  /// 表示的是 item 的数量
   int get count =>  _count;
   set count(int newCount){
     _count = newCount;
@@ -31,6 +32,7 @@ class PageSwitchController  {
     _stateOwner.setState((){});
   }
 
+  /// 表示的是 page 的数量
   int get countAllPages => _countAllPages;
 
 
