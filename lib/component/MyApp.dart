@@ -1,15 +1,11 @@
 import 'dart:ffi';
-import 'dart:developer';
 
-import 'package:active_bg/component/HomeMain/HomeMain.dart';
 import 'package:ffi/ffi.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:active_bg/utils/ConfigUtil.dart' as config;
-
 import 'package:win32/win32.dart';
 
-import '../utils/Win32Util.dart';
+import 'package:active_bg/utils/Win32Util.dart';
+import 'package:active_bg/component/HomeMain/HomeMain.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -19,7 +15,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +30,6 @@ class _MyAppState extends State<MyApp> {
     //   ),
     //   home: const HomeMain(),
     // );
-
     /// 添加了 GestureDetector
     return GestureDetector(
       /// 表示的是点下去的时候
@@ -46,6 +40,7 @@ class _MyAppState extends State<MyApp> {
         Win32Util.moveActiveBgWindow();
       },
       /// 计划自定义的窗口缩放在这里实现
+      /// MaterialApp是 stateful 的，我们可以自由定义全局主题，并且设置
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: "ActiveBackground",

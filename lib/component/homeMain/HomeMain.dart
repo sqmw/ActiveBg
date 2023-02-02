@@ -1,18 +1,15 @@
-import 'dart:developer';
-import 'dart:ffi';
 import 'dart:io';
-import 'dart:ui';
 import 'package:active_bg/component/homeMain/children/DynamicBg.dart';
+import 'package:active_bg/pages/PaletteNavigate.dart';
 import 'package:active_bg/component/homeMain/children/StaticSearch.dart';
 import 'package:active_bg/component/homeMain/children/StaticRecommend.dart';
 import 'package:active_bg/component/homeMain/children/TimeChange.dart';
 import 'package:active_bg/component/lDrawer/LDrawer.dart';
 import 'package:active_bg/utils/Win32Util.dart';
-import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
 import 'package:win32/win32.dart';
 
-import '../lDrawer/children/Settings.dart';
+import 'children/Settings.dart';
 import './children/FullOrFullExitButton.dart';
 import 'children/linkAnalysis/LinkAnalysis.dart';
 
@@ -68,6 +65,14 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
           ],
         ),
         actions: [
+          IconButton(
+            onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                return const PaletteNavigate();
+              }));
+            },
+            icon: const Icon(Icons.palette)
+          ),
           IconButton(
             onPressed: (){
               Navigator.of(context).push(MaterialPageRoute(builder: (context){

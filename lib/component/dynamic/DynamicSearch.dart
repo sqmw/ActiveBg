@@ -1,13 +1,13 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as html_dom;
 
 import 'package:active_bg/interfaces/Preview.dart';
-import '../../utils/DataUtil.dart';
+import 'package:active_bg/utils/DataUtil.dart';
 import 'package:active_bg/component/viewUtils/ImageView.dart';
+import 'package:active_bg/utils/NetUtil.dart' as net_util show dynamicBgVideoDownload;
 
 /// 这个表示点击任何一个页面进入之后的结果以及搜索的结果（实际上都是搜索结果）
 /// 搜索的时候因为结果可能是动态的可能是静态的，所以展示的时候，只展示一种结果
@@ -96,9 +96,13 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
             Expanded(
                 child: TextButton(
                   onPressed: () {
-                    preview(data: "${element.children[0].attributes["src"]}");
+                    DataUtil.dio.get("${element.attributes["href"]}")
+                        .then((res){
+                      html_dom.Element videoEle = DataUtil.getEleListFromStrBySelector("${res.data}", DataUtil.QUERY_VIDEO)[0];
+                      net_util.dynamicBgVideoDownload(videoUrl:videoEle.attributes["src"]!, imgUrl: "${element.children[0].attributes["src"]}");
+                    });
                   },
-                  child: const Text("预览"),
+                  child: const Text("下载"),
                 )
             ),
             Expanded(

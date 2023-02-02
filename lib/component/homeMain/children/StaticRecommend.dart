@@ -127,11 +127,10 @@ class _StaticRecommendState extends State<StaticRecommend> {
                         Expanded(
                             child: TextButton(
                               onPressed: () {
-                                developer.log("set: ${index}");
                                 int uniTimeId = DataUtil.getNowMicroseconds();
-                                DataUtil.dio.download(imgInfo["img"], "${DataUtil.BASE_PATH}/images/${uniTimeId}.${imgInfo["format"]}")
+                                DataUtil.dio.download(imgInfo["img"], "${DataUtil.BASE_PATH}/images/$uniTimeId.${imgInfo["format"]}")
                                     .then((value){
-                                  _savedImgNameList.add("${uniTimeId}.${imgInfo["format"]}");
+                                  _savedImgNameList.add("$uniTimeId.${imgInfo["format"]}");
                                   Timer(const Duration(milliseconds: 10),(){
                                     DataUtil.changeStaticBackground("${DataUtil.BASE_PATH}/images/$uniTimeId.${imgInfo["format"]}");
                                   });

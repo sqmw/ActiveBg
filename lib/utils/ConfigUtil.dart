@@ -7,9 +7,19 @@ import 'package:active_bg/utils/TranslucentTBUtil.dart';
 
 import 'FileDirUtil.dart' as file_dir_util show getPathFromIndex;
 
+/// 这个文件用来进行配置的
 
+/// 表示当前的壁纸类型（video | special_img）
+class BgType{
+  /// 这个表示的是初始状态，可以在配置文件进行读取
+  static int type = -1;
+  static const specialImg = 0;
+  static const video = 1;
+}
 /// 部分配置文件在 DataUtil 里面
 String imageDirPath = "";
+/// 表示的是音量
+double volume = 0;
 
 Map<String,dynamic> _config = {};
 bool configCanSave = true;
@@ -54,6 +64,7 @@ Future<void> loadConfig() async {
     TranslucentTBUtil.translucentTBPath = _config["translucentTBPath"];
     DataUtil.dllLibPath = _config["dllLibPath"];
     DataUtil.opacity = _config["opacity"].toDouble();
+    volume = _config["volume"].toDouble();
   }
 }
 
@@ -68,6 +79,7 @@ Future<void> saveConfig() async {
     _config["translucentTBPath"] = TranslucentTBUtil.translucentTBPath;
     _config["dllLibPath"] = DataUtil.dllLibPath;
     _config["opacity"] = DataUtil.opacity;
+    _config["volume"] = volume;
     _config["imageDirPath"] = imageDirPath;
     IOSink ioSink = configFile.openWrite();
     ioSink.write(json.encode(_config));
@@ -97,3 +109,33 @@ void init(){
   """);
   }
 }
+
+/// 配置文件
+/**
+ * {
+    "BATH_PATH": "./assets",
+    "ACTIVE_WEB_BG_PATH": "../active_dynamic_bg/active_dynamic_bg.exe",
+    "dynamicBgUrl": "https://img-baofun.zhhainiao.com/pcwallpaper_ugc/preview/101d3f1af19562aa17ed65790c04c1b0_preview.mp4",
+    "translucentTBPath": "../TranslucentTB/TranslucentTB.exe",
+    "dllLibPath": "../dll",
+    "isActiveNow": false,
+    "volume": 0,
+    "opacity": 200,
+    "imageDirPath":"",
+    "localImg": "",
+    "localVideo": "",
+    "dynamicBgType": "specialOfImg | video",
+    "unreachableWebsite": [
+    "duba.com",
+    "ddooo.com",
+    "51testing.com",
+    "product.pchome.net",
+    "http://www.ijinshan.com/",
+    "https://www.liebao.cn/",
+    "http://www.drivergenius.com/",
+    "http://soft.duba.com/",
+    "http://www.52hy.52pcfree.com/",
+    "https://www.duba.com/"
+    ]
+    }
+ */

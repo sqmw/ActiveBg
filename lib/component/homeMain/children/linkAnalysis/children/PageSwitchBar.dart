@@ -1,5 +1,4 @@
 import 'package:active_bg/component/homeMain/children/linkAnalysis/children/PageSwitchController.dart';
-import 'package:active_bg/utils/DataUtil.dart';
 import 'package:flutter/material.dart';
 
 /// 只能是真正的页码变化的时候才进行切换

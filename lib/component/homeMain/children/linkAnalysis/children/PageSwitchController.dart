@@ -6,19 +6,13 @@ class PageSwitchController  {
   /// 每一页的数量
   int _countEachPage = 9;
   /// 当前的页码，0 表示什么都没有 1 表示的是第一页
-  int _currentPageIndex = 0;
+  int currentPageIndex = 0;
   /// 总共的展示的数量
   int _count = 0;
   /// page的数量
   int _countAllPages = 0;
 
-  int get currentPageIndex =>  _currentPageIndex;
-  set currentPageIndex(int newIndex){
-    _currentPageIndex = newIndex;
-  }
-
   late final State _stateOwner;
-
 
   set stateOwner(State value) {
     _stateOwner = value;

@@ -1,12 +1,11 @@
 import 'package:active_bg/interfaces/Preview.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
 import 'package:html/dom.dart' as html_dom;
 
-import '../../utils/DataUtil.dart';
+import 'package:active_bg/utils/DataUtil.dart';
 import '../viewUtils/ImageView.dart';
 import 'DynamicSearch.dart';
+import 'package:active_bg/utils/NetUtil.dart' as net_util show dynamicBgVideoDownload;
 /// 动态壁纸的显示推荐和分类的部分，分类和推荐共同使用一个Future，因此封装在一起
 
 class RecommendAndClassifySet extends StatefulWidget {
@@ -26,7 +25,7 @@ class _RecommendAndClassifySetState extends State<RecommendAndClassifySet> imple
     /// 获取推荐
     // region
     // log("${response.data.toString().length}--->length");
-    List<html_dom.Element> recommendListInfo = DataUtil.getEleListFromStrBySelector("${data}", DataUtil.QUERY_VIDEO_PAGE_LIST);
+    List<html_dom.Element> recommendListInfo = DataUtil.getEleListFromStrBySelector("$data", DataUtil.QUERY_VIDEO_PAGE_LIST);
     /// log("${recommendListInfo}");
     /// print(element.innerHtml);
     for (var element in recommendListInfo) {
@@ -43,9 +42,13 @@ class _RecommendAndClassifySetState extends State<RecommendAndClassifySet> imple
             Expanded(
                 child: TextButton(
                   onPressed: () {
-                    preview(data: "${element.children[0].attributes["src"]}");
+                    DataUtil.dio.get("${element.attributes["href"]}")
+                      .then((res){
+                      html_dom.Element videoEle = DataUtil.getEleListFromStrBySelector("${res.data}", DataUtil.QUERY_VIDEO)[0];
+                      net_util.dynamicBgVideoDownload(videoUrl: videoEle.attributes["src"]!, imgUrl: "${element.children[0].attributes["src"]}");
+                    });
                   },
-                  child: const Text("预览"),
+                  child: const Text("下载"),
                 )
             ),
             Expanded(
@@ -71,7 +74,7 @@ class _RecommendAndClassifySetState extends State<RecommendAndClassifySet> imple
     }
     //endregion
     /// 获取分类
-    List<html_dom.Element> classificationListInfo = DataUtil.getEleListFromStrBySelector("${data}", DataUtil.QUERY_TYPE);
+    List<html_dom.Element> classificationListInfo = DataUtil.getEleListFromStrBySelector("$data", DataUtil.QUERY_TYPE);
     for (var element in classificationListInfo) {
       _classificationList.add(ListTile(
         onTap: (){

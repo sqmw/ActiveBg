@@ -3,7 +3,6 @@ import 'package:active_bg/component/homeMain/children/linkAnalysis/children/Html
 import 'package:active_bg/component/homeMain/children/linkAnalysis/children/LocalFileOrNetVideo.dart';
 import 'package:flutter/material.dart';
 
-import 'package:active_bg/utils/LinkAnalysisUtil.dart' as link_analysis_util;
 /// 可以支持各种链接的解析、包含本地的文件路径，或者是网页的链接等
 
 final Map<String, dynamic> data = {

@@ -5,10 +5,12 @@
   "translucentTBPath": "../TranslucentTB/TranslucentTB.exe",
   "dllLibPath": "../dll",
   "isActiveNow": false,
-  "volume": 1.0,
+  "volume": 0,
   "opacity": 200,
+  "imageDirPath":"",
   "localImg": "",
   "localVideo": "",
+  "dynamicBgType": "specialOfImg | video",
   "unreachableWebsite": [
     "duba.com",
     "ddooo.com",

@@ -1,10 +1,9 @@
 import 'package:active_bg/component/lDrawer/children/AboutAndNotification.dart';
-import 'package:active_bg/component/lDrawer/children/Settings.dart';
-import 'package:active_bg/utils/DataUtil.dart';
 import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import './children/TranslucentTB.dart';
 import 'children/ActiveBgTransparent.dart';
+import 'children/ActiveBgVolume.dart';
 
 class LDrawer extends StatefulWidget {
   LDrawer({Key? key}) : super(key: key);
@@ -33,6 +32,10 @@ class _LDrawerState extends State<LDrawer> {
               child: TranslucentTB(),
             )
           ),
+          const Expanded(
+            flex: 1,
+            child: ActiveBgVolume(),
+          ),
           Expanded(
               flex: 1,
               child: TextButton(
@@ -42,26 +45,9 @@ class _LDrawerState extends State<LDrawer> {
                 child: const Text("关闭动态壁纸"),
               )
           ),
-          Expanded(
-              flex: 1,
-              child: TextButton(
-                onPressed: () {
-                },
-                child: const Text("动效"),
-              )
-          ),
           const Expanded(
               flex: 1,
               child: ActiveBgTransparent()
-          ),
-          Expanded(
-              flex: 1,
-              child: TextButton(
-                onPressed: () {
-
-                },
-                child: const Text("本地视频/图片"),
-              )
           ),
           Expanded(
               flex: 1,

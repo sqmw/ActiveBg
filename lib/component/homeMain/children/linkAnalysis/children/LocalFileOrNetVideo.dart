@@ -25,12 +25,12 @@ class _LocalFileOrNetVideoState extends State<LocalFileOrNetVideo> with UriAnaly
                 flex: 1,
                 child: IconButton(
                   onPressed: ()async{
-                    final XFile? file = await openFile();
+                    final XFile? file = await openFile(initialDirectory: "${DataUtil.BASE_PATH}/videos/mp4");
                     /// 防止没有选择文件
-                    if(file == null ||file!.path.isEmpty){
+                    if(file == null ||file.path.isEmpty){
                       return;
                     }
-                    textEditingController.text = file!.path;
+                    textEditingController.text = file.path;
                     DataUtil.setDynamicBgUrl(textEditingController.text.trim());
                   },
                   icon: Icon(Icons.file_open, color: Theme.of(context).primaryColor,),

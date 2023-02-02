@@ -1,7 +1,6 @@
 import 'package:active_bg/component/dynamic/DynamicSearch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:developer';
 import 'package:html/dom.dart' as html_dom;
 
 import '../../../utils/DataUtil.dart';
@@ -133,7 +132,7 @@ class _DynamicBgState extends State<DynamicBg> {
                   onPressed: () {
 
                   },
-                  child: const Text("预览"),
+                  child: const Text("下载"),
                 )
             ),
             Expanded(

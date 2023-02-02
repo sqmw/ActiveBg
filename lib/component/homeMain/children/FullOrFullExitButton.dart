@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../utils/Win32Util.dart';
+import 'package:active_bg/utils/Win32Util.dart';
 
 class FullOrFullExitButton extends StatefulWidget {
   const FullOrFullExitButton({Key? key}) : super(key: key);

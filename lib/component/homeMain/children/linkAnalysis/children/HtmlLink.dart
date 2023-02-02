@@ -12,7 +12,7 @@ import 'package:active_bg/utils/Win32Util.dart';
 import 'package:active_bg/utils/DataUtil.dart';
 import 'package:active_bg/interfaces/Preview.dart';
 import 'package:active_bg/component/viewUtils/ImageView.dart';
-import 'package:active_bg/utils/NetUtil.dart' as net_util show recurseToGetLink, Data, ResponseActions;
+import 'package:active_bg/utils/NetUtil.dart' as net_util show recurseToGetLink, Data, ResponseActions, CommunicationTaskQueueLoop, dynamicBgVideoDownload;
 /**
  * 对应链接解析
  */
@@ -137,7 +137,8 @@ class _HtmlLinkState extends State<HtmlLink> with UriAnalysis{
                       }
                       // log("${_imgUrlMap.length}"); // 可以接收到
                       /// 可以看书，当我们的切面切换开之后，只要是浏览过的页面，任然是处于加载状态
-                      net_util.Data.setCommunicationMsg(action: net_util.ResponseActions.getImgFromVideo, data: _imgUrlMap);
+                      net_util.CommunicationTaskQueueLoop.addMsg(action: net_util.ResponseActions.getImgFromVideo, data: _imgUrlMap, doBefore: (){});
+
                       net_util.Data.base64ReceivePort = ReceivePort();
                       /// {index(*String*): base64}
                       int cou = 0;
@@ -186,7 +187,8 @@ class _HtmlLinkState extends State<HtmlLink> with UriAnalysis{
                         pageSwitchController:_pageSwitchController,
                         context: context,
                         index: index,
-                        urlList: _urlList,);
+                        urlList: _urlList,
+                      );
                     }
                   )
                 )
@@ -265,10 +267,9 @@ class ItemOfAnalysisResultState extends State<ItemOfAnalysisResult>implements Pr
                   builder: (BuildContext context, StateSetter setState){
                     return TextButton(
                       onPressed: () {
-                        /// 预览的动作
-                        preview();
+                        net_util.dynamicBgVideoDownload(videoUrl: widget.urlList[_indexOfAll], imgBase64: widget.imgBase64Map["$_indexOfAll"]);
                       },
-                      child:const Text("桌面预览"),
+                      child:const Text("下载"),
                     );
                   })
           ),
@@ -290,15 +291,15 @@ class ItemOfAnalysisResultState extends State<ItemOfAnalysisResult>implements Pr
   void preview({data}) {
     // TODO: implement preview
     showDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context){
-          return ImageView(
-            image: widget.imgBase64Map["$_indexOfAll"] == null || widget.imgBase64Map["$_indexOfAll"]!.isEmpty?
-            Image.file(fit: BoxFit.fill,File("${DataUtil.BASE_PATH}/images/poster.jpg")):
-            Image.memory(fit: BoxFit.fill, base64.decode(widget.imgBase64Map["$_indexOfAll"]!)),
-          );
-        }
+      context: context,
+      barrierDismissible: true,
+      builder: (context){
+        return ImageView(
+          image: widget.imgBase64Map["$_indexOfAll"] == null || widget.imgBase64Map["$_indexOfAll"]!.isEmpty?
+          Image.file(fit: BoxFit.fill,File("${DataUtil.BASE_PATH}/images/poster.jpg")):
+          Image.memory(fit: BoxFit.fill, base64.decode(widget.imgBase64Map["$_indexOfAll"]!)),
+        );
+      }
     );
   }
 }

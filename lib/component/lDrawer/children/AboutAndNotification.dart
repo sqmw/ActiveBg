@@ -81,7 +81,7 @@ class _AboutAndNotificationState extends State<AboutAndNotification> {
                           ),
                           Expanded(
                               flex: 2,
-                              child:Text("动态壁纸采用了webView，可以支持html页面解析等，有着很大的拓展空间")
+                              child:Text("动态壁纸采用了webView，可以支持html页面解析等，有较大的拓展空间")
                           )
                         ],
                       ),
@@ -110,7 +110,7 @@ class _AboutAndNotificationState extends State<AboutAndNotification> {
                           ),
                           Expanded(
                               flex: 2,
-                              child:Text("如果您使用后对软件有不满意的地方，并且您对该类软件开发有着浓厚的兴趣且有着充足的时间，欢迎通过qq或者github等联系方式加入该软件的开发，一同完善该软件以及在android以及IOS端的开发")
+                              child:Text("如果您使用后对软件有不满意的地方，并且您对该类软件开发有着浓厚的兴趣且有着充足的时间，欢迎通过qq或者github等联系方式加入该软件的开发，一同完善该软件的开发")
                           )
                         ],),
                     ),

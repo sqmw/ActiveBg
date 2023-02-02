@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 /// 下拉选择框
 /// 已经封装好了，基本不用管
 class AnalysisTypeSelector extends StatefulWidget {
