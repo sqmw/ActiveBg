@@ -8,6 +8,7 @@
 <div style="display: flex; justify-content: space-around">
     <a href="/lib/assets/release">点击前往下载</a>
 </div>
+
 [comment]: <> ("注释")
 
 **动态壁纸窗口**: https://github.com/sqmw/activeBgDynamic
@@ -55,6 +56,7 @@ activeBg操作简易，很方便就能设置一个美丽的桌面壁纸
 *轻量级(安装包体积小、启动之后占用CPU以及内存均很小)*
 
 [comment]: <> ("这里需要放置CPU以及内存的图片")
+
 #### 图片或者动图展示
 <img src="/lib/assets/description/activeBg_usage_of_CPU_and_memory.png" width="800"/>
 
