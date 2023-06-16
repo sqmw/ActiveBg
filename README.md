@@ -8,6 +8,7 @@
 <div style="display: flex; justify-content: space-around">
     <a href="/lib/assets/release">点击前往下载</a>
 </div>
+<<<<<<< HEAD
 
 
 **动态壁纸客户端原码地址**: https://github.com/sqmw/ActiveBgDynamic
@@ -56,7 +57,8 @@ ActiveBg操作简易，很方便就能设置一个美丽的桌面壁纸
 ## 特点
 *轻量级(安装包体积小、启动之后占用CPU以及内存均很小)*
 
-[comment]: <> ""这里需要放置CPU以及内存的图片""
+[comment]: <> ("这里需要放置CPU以及内存的图片")
+
 #### 图片或者动图展示
 <img src="/lib/assets/description/ActiveBg_usage_of_CPU_and_memory.png" width="800"/>
 
