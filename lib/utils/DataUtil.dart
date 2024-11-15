@@ -11,7 +11,7 @@ import 'dart:developer' as developer;
 import 'package:html/parser.dart' as html show parse;
 import 'package:html/dom.dart' as html_dom;
 
-import '../component/viewUtils/ImageView.dart';
+import 'package:active_bg/component/viewUtils/ImageView.dart';
 import 'ConfigUtil.dart' as config show saveConfig;
 import 'package:active_bg/utils/NetUtil.dart' as net_util show ResponseActions, CommunicationTaskQueueLoop, getUnusedPort, ActiveDynamicBgVideoInfo;
 import 'package:active_bg/utils/ConfigUtil.dart' as config_util show BgType;
@@ -219,7 +219,7 @@ class DataUtil{
       Win32Util.createWorkerW();
       Process.run(ACTIVE_WEB_BG_PATH, []);
       Timer.periodic(const Duration(milliseconds: 300), (timer) {
-        if (Win32Util.setActiveBgToParentWorkerW()){
+        if (Win32Util.setActiveBgEngineToParentWorkerW()){
           timer.cancel();
         }
       });

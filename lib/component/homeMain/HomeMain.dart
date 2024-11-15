@@ -5,9 +5,8 @@ import 'package:active_bg/component/homeMain/children/StaticSearch.dart';
 import 'package:active_bg/component/homeMain/children/StaticRecommend.dart';
 import 'package:active_bg/component/homeMain/children/TimeChange.dart';
 import 'package:active_bg/component/lDrawer/LDrawer.dart';
-import 'package:active_bg/utils/Win32Util.dart';
+import 'package:active_bg/utils/window_util.dart';
 import 'package:flutter/material.dart';
-import 'package:win32/win32.dart';
 
 import 'children/Settings.dart';
 import './children/FullOrFullExitButton.dart';
@@ -21,8 +20,6 @@ class HomeMain extends StatefulWidget {
 
 class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
   late final TabController _tabController;
-  /// 申明的是引用
-  late POINT cursorPosBefore;
   @override
   void initState() {
     super.initState();
@@ -86,7 +83,10 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
           ),
           IconButton(
             onPressed: (){
-              ShowWindow(Win32Util.hWndActiveBg, SW_MINIMIZE);
+              // 将窗口设置成最小化
+              WindowUtil.minimize();
+              // 原来的代码是通过win32来实现的
+              // ShowWindow(Win32Util.hWndActiveBg, SW_MINIMIZE);
             },
             icon: const Icon(Icons.minimize)
           ),

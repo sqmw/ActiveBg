@@ -1,9 +1,5 @@
-import 'dart:isolate';
-
 import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
-import 'dart:developer';
-
 import 'package:active_bg/utils/ConfigUtil.dart' as config;
 import '../../../utils/DataUtil.dart';
 

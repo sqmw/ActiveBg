@@ -139,17 +139,18 @@ class _RecommendAndClassifySetState extends State<RecommendAndClassifySet> imple
 }
 
 class SetContent extends StatelessWidget {
-  SetContent({required this.recommendDynamicBgList,required this.classificationList ,Key? key}) : super(key: key);
-  late Size _size;
-  List<Widget> recommendDynamicBgList;
-  List<Widget> classificationList;
+  const SetContent({required this.recommendDynamicBgList, required this.classificationList, Key? key}) : super(key: key);
+  
+  final List<Widget> recommendDynamicBgList;
+  final List<Widget> classificationList;
+
   @override
   Widget build(BuildContext context) {
-    _size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
 
     return SizedBox(
-        width: _size.width,
-        height: _size.height*1,
+        width: size.width,
+        height: size.height*1,
         child: ListView(
           children: [
             const Divider(
@@ -162,8 +163,8 @@ class SetContent extends StatelessWidget {
               thickness: 3,
             ),
             SizedBox(
-              height: _size.height * 1 - 50,
-              width: _size.width,
+              height: size.height * 1 - 50,
+              width: size.width,
               child:GridView.count(
                 childAspectRatio: 99/(54 + 9),
                 crossAxisCount: 3,
@@ -182,8 +183,8 @@ class SetContent extends StatelessWidget {
               thickness: 3,
             ),
             SizedBox(
-              width: _size.width,
-              height: _size.width / 4 * 54/99 * (classificationList.length / 4).ceil() + 100,
+              width: size.width,
+              height: size.width / 4 * 54/99 * (classificationList.length / 4).ceil() + 100,
               child:GridView.count(
                 childAspectRatio: 99/54,
                 crossAxisCount: 4,

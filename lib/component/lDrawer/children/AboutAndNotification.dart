@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/material.dart';
+
 
 class AboutAndNotification extends StatefulWidget {
   const AboutAndNotification({Key? key}) : super(key: key);

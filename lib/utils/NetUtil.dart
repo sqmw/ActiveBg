@@ -1,16 +1,12 @@
 import 'dart:io';
 import 'dart:isolate';
 import 'dart:convert';
-import 'package:active_bg/utils/DataUtil.dart';
-import 'package:active_bg/utils/Win32Util.dart';
-import 'package:flutter/material.dart';
 import 'dart:async';
-import 'dart:ffi';
 import 'dart:collection';
-
-import 'package:win32/win32.dart';
-import 'package:ffi/ffi.dart';
 import 'package:dio/dio.dart';
+
+import 'package:active_bg/utils/DataUtil.dart';
+
 
 const minImgLinkLength = 20;
 const maxImgLinkLength = 200;
@@ -331,101 +327,6 @@ Future<List<String>> getNetImageFromHtmlUrl({String url = "https://bing.ioliu.cn
   var list = getLinkListByRegExp(res.data);
   list.removeWhere((element) => !element.contains(RegExp(r"(png|jpg)")) || element.length <= minImgLinkLength || element.length >= maxImgLinkLength );
   return list;
-}
-
-class MouseAction{
-  static Pointer<POINT> pPointNew = malloc<POINT>(1);
-  static Pointer<POINT> pPointOld = malloc<POINT>(1);
-  static Timer? _timer;
-  static bool pointUpdated = false;
-  static stopMouseAction(){
-    _timer?.cancel();
-  }
-  static int getMouseAction(String scriptName){
-    if(scriptName.contains(ResponseActions.strClick) &&
-      scriptName.contains(ResponseActions.strOver) &&
-      scriptName.contains(ResponseActions.strMove)){
-      return ResponseActions.mouseActionClick | ResponseActions.mouseActionMove | ResponseActions.mouseActionOver;
-    }else if(
-      scriptName.contains(ResponseActions.strClick) &&
-      scriptName.contains(ResponseActions.strOver)){
-      return ResponseActions.mouseActionClick | ResponseActions.mouseActionOver;
-    }else if(
-      scriptName.contains(ResponseActions.strClick) &&
-      scriptName.contains(ResponseActions.strMove)){
-      return ResponseActions.mouseActionClick | ResponseActions.mouseActionMove ;
-    }else if(
-      scriptName.contains(ResponseActions.strOver) &&
-      scriptName.contains(ResponseActions.strMove)){
-      return ResponseActions.mouseActionMove | ResponseActions.mouseActionOver;
-    }else if(scriptName.contains(ResponseActions.strClick)){
-      return ResponseActions.mouseActionClick;
-    }else if(scriptName.contains(ResponseActions.strOver)){
-      return ResponseActions.mouseActionOver;
-    } else if(scriptName.contains(ResponseActions.strMove)){
-      return ResponseActions.mouseActionMove;
-    }
-    return -1;
-  }
-  /// 默认情况下是包含了所有
-  /// click为主要，其次是over，最后是move
-  static void startMouseAction({int actionType = ResponseActions.mouseActionClick | ResponseActions.mouseActionMove | ResponseActions.mouseActionOver}){
-    /// 这里应该需要钩子才能实现，目前的方法在其他浏览器上面试了可以，但是在tauri都不行
-    return;
-
-    _timer?.cancel();
-    /// 判断是否有click意外的其他动作
-    if(actionType == ResponseActions.mouseActionClick | ResponseActions.mouseActionMove | ResponseActions.mouseActionOver){
-      pointUpdated = true;
-    }else if(actionType ==ResponseActions.mouseActionMove | ResponseActions.mouseActionOver){
-      pointUpdated = true;
-    }else if(actionType == ResponseActions.mouseActionClick  | ResponseActions.mouseActionOver){
-      pointUpdated = true;
-    }else if(actionType == ResponseActions.mouseActionClick | ResponseActions.mouseActionMove ){
-      pointUpdated = true;
-    }else if(actionType ==  ResponseActions.mouseActionOver){
-      pointUpdated = true;
-    }else if(actionType ==  ResponseActions.mouseActionMove ){
-      pointUpdated = true;
-    }
-    if(pointUpdated){
-      GetCursorPos(pPointNew);
-    }
-    _timer = Timer.periodic(const Duration(milliseconds: 100), (timer) {
-      /// 判断鼠标是否点下
-      if(GetAsyncKeyState(VK_LBUTTON) != 0){
-        pointUpdated = true;
-        GetCursorPos(pPointNew);
-      }
-      if(pointUpdated && (pPointOld.ref.x != pPointNew.ref.x || pPointOld.ref.y != pPointNew.ref.y)){
-        /// 这个是方案一，通过http将鼠标信息传递给浏览器，让浏览器来触发事件
-        /// 目前实现了：click over move
-        /// 问题：因为浏览器鼠标点击识别的是clientX|Y但是我传递的是screenX|Y，导致了比例差，这个这个比例在不同分辨率的电脑下
-        /// 难以确定是否相同
-        // CommunicationTaskQueueLoop.addMsg(
-        //     action: ResponseActions.mouseAction,
-        //     data: {
-        //       "type": actionType,
-        //       "point":{
-        //         "x":pointer.ref.x,
-        //         "y":pointer.ref.y,
-        //       }
-        //     },
-        //     doBefore: (){
-        //       pointUpdated = false;
-        //     }
-        // );
-        /// 这个是方案二，程序员通过UI直接传递Message给浏览器，浏览器自己处理，实现模拟，
-        /// 目前浏览器端的事件是右键事件，左键似乎被阻止了（目前原因不明）
-        /// 抑或通过win hook实现
-        PostMessage(Win32Util.hWndActiveDynamicBg, WM_RBUTTONDOWN, 0, MAKELONG(pPointNew.ref.x, pPointNew.ref.y));
-        PostMessage(Win32Util.hWndActiveDynamicBg, WM_RBUTTONUP, 0, MAKELONG(pPointNew.ref.x, pPointNew.ref.y));
-        print("old:-> (${pPointOld.ref.x},${pPointOld.ref.y}); new -> (${pPointNew.ref.x},${pPointNew.ref.y})");
-        pPointOld.ref.x = pPointNew.ref.x;
-        pPointOld.ref.y = pPointNew.ref.y;
-      }
-    });
-  }
 }
 
 void dynamicBgVideoDownload( {String videoUrl = "", String imgUrl = "",String imgType = "gif", String videoType = "mp4", void Function()? callBack, String? imgBase64}){

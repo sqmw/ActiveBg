@@ -94,3 +94,8 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+# 表示支持的平台
+platforms:
+  windows
+  macos

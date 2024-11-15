@@ -1,10 +1,4 @@
-import 'dart:ffi';
-
-import 'package:ffi/ffi.dart';
 import 'package:flutter/material.dart';
-import 'package:win32/win32.dart';
-
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:active_bg/component/HomeMain/HomeMain.dart';
 
 class MyApp extends StatefulWidget {
@@ -31,19 +25,9 @@ class _MyAppState extends State<MyApp> {
     //   home: const HomeMain(),
     // );
     /// 添加了 GestureDetector
-    return GestureDetector(
-      /// 表示的是点下去的时候
-      onTapDown: (_){
-        /// 移动窗口
-        Pointer<RECT> pRect = malloc<RECT>();
-        GetWindowRect(Win32Util.hWndActiveBg, pRect);
-        Win32Util.moveActiveBgWindow();
-      },
-      /// 计划自定义的窗口缩放在这里实现
-      /// MaterialApp是 stateful 的，我们可以自由定义全局主题，并且设置
-      child: MaterialApp(
+    return MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "ActiveBackground",
+        title: "ActiveBg",
         theme: ThemeData(
           appBarTheme: const AppBarTheme(
             backgroundColor: Color.fromRGBO(155, 154, 154, 1.0),
@@ -51,28 +35,7 @@ class _MyAppState extends State<MyApp> {
           primarySwatch: Colors.deepPurple,
         ),
         home: const HomeMain(),
-      ),
-      /// 添加了鼠标进入等用来实现窗口缩放
-      // child: MouseRegion(
-      //   /// 通过这个事件实现窗口的缩放
-      //   onHover: (PointerHoverEvent event){
-      //     log("${event.localPosition}");
-      //     //SystemMouseCursors.resizeUp;
-      //     SetCursor(LoadCursor(GWL_HINSTANCE,TEXT("IDC_CROSS")));
-      //   },
-      //   child: MaterialApp(
-      //     debugShowCheckedModeBanner: false,
-      //     title: "ActiveBackground",
-      //     theme: ThemeData(
-      //       appBarTheme: const AppBarTheme(
-      //         backgroundColor: Color.fromRGBO(155, 154, 154, 1.0),
-      //       ),
-      //       primarySwatch: Colors.deepPurple,
-      //     ),
-      //     home: const HomeMain(),
-      //   ),
-      // ),
-    );
+      );
   }
 
   /// 这个函数可能没有执行，关闭整个程序和dispose不一样
