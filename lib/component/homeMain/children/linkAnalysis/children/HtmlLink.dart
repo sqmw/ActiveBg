@@ -8,7 +8,6 @@ import 'package:active_bg/mixins/UriAnalysis.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart' as url_launcher;
 
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:active_bg/utils/DataUtil.dart';
 import 'package:active_bg/interfaces/Preview.dart';
 import 'package:active_bg/component/viewUtils/ImageView.dart';
@@ -175,7 +174,7 @@ class _HtmlLinkState extends State<HtmlLink> with UriAnalysis{
                     itemCount: _currentPageItemCount,
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 3,
-                      childAspectRatio: Win32Util.whRate,
+                      // childAspectRatio: Win32Util.whRate,
                     ),
                     itemBuilder: (context, index){
                       /// 重新赋值

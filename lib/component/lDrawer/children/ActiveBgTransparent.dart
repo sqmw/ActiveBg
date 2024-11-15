@@ -1,4 +1,3 @@
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import 'package:active_bg/utils/ConfigUtil.dart' as config;
 import '../../../utils/DataUtil.dart';
@@ -29,7 +28,7 @@ class _ActiveBgTransparentState extends State<ActiveBgTransparent> {
             onChanged: (val){
               setState(() {
                 DataUtil.opacity = val;
-                Win32Util.setActiveBgTransparent(DataUtil.opacity.toInt());
+                // Win32Util.setActiveBgTransparent(DataUtil.opacity.toInt());
                 Future.microtask((){
                   config.saveConfig();
                 });

@@ -1,8 +1,6 @@
 import 'dart:io';
 
 // 仅在 Windows 平台编译时导入 win32
-import 'win32_stub.dart' if (dart.platform.isWindows) 'package:win32/win32.dart';
-
 class TranslucentTBUtil {
   static String translucentTBPath = "C:/Users/19519/Desktop/TranslucentTB/TranslucentTB.exe";
 
@@ -15,8 +13,9 @@ class TranslucentTBUtil {
     
     // 仅在 Windows 平台上执行的代码
     try {
-      int hTranslucentTB = FindWindow(nullptr, TEXT("TranslucentTB")); 
-      return hTranslucentTB != 0;
+      // int hTranslucentTB = FindWindow(nullptr, TEXT("TranslucentTB")); 
+      // return hTranslucentTB != 0;
+      return false;
     } catch (e) {
       print('Windows specific operation not available');
       return false;

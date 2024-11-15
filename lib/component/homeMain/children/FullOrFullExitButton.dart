@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:active_bg/utils/Win32Util.dart';
 
 class FullOrFullExitButton extends StatefulWidget {
   const FullOrFullExitButton({Key? key}) : super(key: key);
@@ -15,10 +14,10 @@ class _FullOrFullExitButtonState extends State<FullOrFullExitButton> {
     return IconButton(
       onPressed: (){
         setState(() {
-          Win32Util.setFullScreenOrOutFullScreen();
+          // Win32Util.setFullScreenOrOutFullScreen();
         });
       },
-      icon: Win32Util.isFullScreen ? const Icon(Icons.fullscreen_exit): const Icon(Icons.fullscreen),
+      icon: true ? const Icon(Icons.fullscreen_exit): const Icon(Icons.fullscreen),
     );
   }
 }

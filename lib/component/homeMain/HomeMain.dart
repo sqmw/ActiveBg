@@ -5,7 +5,6 @@ import 'package:active_bg/component/homeMain/children/StaticSearch.dart';
 import 'package:active_bg/component/homeMain/children/StaticRecommend.dart';
 import 'package:active_bg/component/homeMain/children/TimeChange.dart';
 import 'package:active_bg/component/lDrawer/LDrawer.dart';
-import 'package:active_bg/utils/window_util.dart';
 import 'package:flutter/material.dart';
 
 import 'children/Settings.dart';
@@ -84,7 +83,7 @@ class _HomeMainState extends State<HomeMain> with TickerProviderStateMixin {
           IconButton(
             onPressed: (){
               // 将窗口设置成最小化
-              WindowUtil.minimize();
+              // WindowUtil.minimize();
               // 原来的代码是通过win32来实现的
               // ShowWindow(Win32Util.hWndActiveBg, SW_MINIMIZE);
             },

@@ -1,5 +1,4 @@
 import 'package:active_bg/component/lDrawer/children/AboutAndNotification.dart';
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import './children/TranslucentTB.dart';
 import 'children/ActiveBgTransparent.dart';
@@ -40,7 +39,7 @@ class _LDrawerState extends State<LDrawer> {
               flex: 1,
               child: TextButton(
                 onPressed: () {
-                  Win32Util.destroyActiveBgWin();
+                  // Win32Util.destroyActiveBgWin();
                 },
                 child: const Text("关闭动态壁纸"),
               )

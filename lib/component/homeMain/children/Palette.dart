@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'package:flutter/material.dart';
 
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:active_bg/utils/DataUtil.dart';
 import 'package:active_bg/interfaces/Preview.dart';
 import 'package:active_bg/component/viewUtils/ImageView.dart';
@@ -40,7 +39,7 @@ class _PaletteState extends State<Palette> implements Preview{
               _paletteItemList.add(createPaletteItem(showName: element.showName,fileRelativePath: element.fileRelativePath, scriptName: element.fileName, isImg: element.isImg));
             }
             return GridView.count(
-              childAspectRatio: Win32Util.whRate,
+              // childAspectRatio: Win32Util.whRate,
               crossAxisCount: 3,
               children: _paletteItemList,
             );
@@ -138,11 +137,11 @@ class _PaletteState extends State<Palette> implements Preview{
                 /// 需要对当前的壁纸类型进行判断，现在定义视频仅仅能添加一个script脚本，特效有两种
                 onPressed: () {
                   /// 首先需要开启
-                  Win32Util.updateActiveBgWebHWnd();
-                  if(Win32Util.hWndActiveDynamicBg == 0){
-                    DataUtil.startActiveBgDynamicBgProc();
-                    sleep(const Duration(milliseconds: 400));
-                  }
+                  // Win32Util.updateActiveBgWebHWnd();
+                  // if(Win32Util.hWndActiveDynamicBg == 0){
+                  //   DataUtil.startActiveBgDynamicBgProc();
+                  //   sleep(const Duration(milliseconds: 400));
+                  // }
                   // 表示此时点击的js是 subJoin
                   if(!isImg){
                     if(net_util.SpecialSubjoin.scriptSubJoinFileName.isNotEmpty){

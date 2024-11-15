@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'dart:ffi' as ffi;
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:ffi/ffi.dart';
@@ -65,7 +64,7 @@ class DataUtil{
 
   static void changeStaticBackground(String imgPath){
     //isActiveBgNow = false;
-    Win32Util.destroyActiveBgWin();
+    // Win32Util.destroyActiveBgWin();
     //activeBgProcNowIsShow = false;
     _changeBackground(imgPath.toNativeUtf8());
   }
@@ -216,12 +215,12 @@ class DataUtil{
     // 需要判断当前的壁纸的类型
     Future.microtask(() async{
       // 这段代码其实没必要，在main里面已经执行了
-      Win32Util.createWorkerW();
+      // Win32Util.createWorkerW();
       Process.run(ACTIVE_WEB_BG_PATH, []);
       Timer.periodic(const Duration(milliseconds: 300), (timer) {
-        if (Win32Util.setActiveBgEngineToParentWorkerW()){
-          timer.cancel();
-        }
+        // if (Win32Util.setActiveBgEngineToParentWorkerW()){
+        //   timer.cancel();
+        // }
       });
     });
     return true;
@@ -240,11 +239,11 @@ class DataUtil{
     }
     config_util.BgType.type = config_util.BgType.video;
     DataUtil.dynamicBgUrl = urlOrFilePath;
-    Win32Util.updateActiveBgWebHWnd();
+    // Win32Util.updateActiveBgWebHWnd();
     // developer.log("web: ${Win32Util.hWndActiveWeb.toRadixString(16)}");
-    if(Win32Util.hWndActiveDynamicBg == 0){
-      startActiveBgDynamicBgProc();
-    }
+    // if(Win32Util.hWndActiveDynamicBg == 0){
+    //   startActiveBgDynamicBgProc();
+    // }
     /// 表示是 netResource
     if(urlOrFilePath.startsWith("http")){
       /// 这里如果出现错误，检测不到

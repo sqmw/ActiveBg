@@ -1,6 +1,4 @@
 import 'dart:async';
-
-import 'package:active_bg/utils/Win32Util.dart';
 import 'package:flutter/material.dart';
 import 'package:html/dom.dart' as html_dom;
 
@@ -160,7 +158,7 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
               loadResearchInfo(snapshot.data);
               return GridView.count(
                 controller: _scrollController,
-                childAspectRatio: Win32Util.whRate,
+                // childAspectRatio: Win32Util.whRate,
                 crossAxisCount: 3,
                 mainAxisSpacing: 20,
                 children: _searchResultList,
@@ -180,7 +178,7 @@ class _DynamicSearchSetState extends State<DynamicSearchSet> implements Preview{
     }else{
       return GridView.count(
         controller: _scrollController,
-        childAspectRatio: Win32Util.whRate,
+        // childAspectRatio: Win32Util.whRate,
         crossAxisCount: 3,
         mainAxisSpacing: 20,
         children: _searchResultList,
