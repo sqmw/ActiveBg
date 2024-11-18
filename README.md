@@ -8,10 +8,8 @@
 <div style="display: flex; justify-content: space-around">
     <a href="/lib/assets/release">点击前往下载</a>
 </div>
-<<<<<<< HEAD
 
-
-**动态壁纸客户端原码地址**: https://github.com/sqmw/ActiveBgDynamic
+**动态壁纸 engine(展示端) 原码地址**: https://github.com/sqmw/ActiveBgDynamic
 
 **介绍视频链接**: https://files.catbox.moe/uojxv1.mp4
 
