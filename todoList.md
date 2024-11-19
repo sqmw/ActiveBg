@@ -17,3 +17,6 @@ SetWindowLongPtr
 SetWindowLong
 
 assert usage  'bAlpha >=0 && bAlpha <= 255': is not true. 断言的地方仅仅会报错
+
+---
+1. 搜索，壁纸等的API通过配置实现，并且可以进行修改配置文件修改搜索

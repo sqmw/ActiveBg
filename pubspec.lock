@@ -114,7 +114,7 @@ packages:
     source: hosted
     version: "0.9.0+4"
   file_selector_platform_interface:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: file_selector_platform_interface
       sha256: "17cdfe3d13a7d3e29e3d3978577ce840fcf94497d7de51bdea378abf9a34fc2c"
