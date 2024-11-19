@@ -64,7 +64,7 @@ ActiveBg操作简易，很方便就能设置一个美丽的桌面壁纸
 [comment]: <> ("这里需要放置CPU以及内存的图片")
 
 #### 图片或者动图展示
-<img src="/lib/assets/description/ActiveBg_usage_of_CPU_and_memory.png" width="800"/>
+<img src="/lib/assets/description/activeBg_usage_of_CPU_and_memory.png" width="800"/>
 
 > ActiveBg的CPU以及内存占用情况
 
