@@ -31,6 +31,22 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+*.g.dart
+*.freezed.dart
+
+# 环境文件（如果有）
+.env
+*.env.*
+
+# 依赖文件锁定（通常需要提交）
+# pubspec.lock
+
+# 本地配置文件
+local.properties
+
+# 临时文件
+*.tmp
+*.temp
 
 # Symbolication related
 app.*.symbols
@@ -43,11 +59,11 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-/linux/
-/ios/
-/macos/
-/web/
-/android/
-/lib/assets/images/*
-/lib/assets/videos/*
+# /linux/
+# /ios/
+# /macos/
+# /web/
+# /android/
+# /lib/assets/images/*
+# /lib/assets/videos/*
 test.md
