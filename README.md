@@ -1,101 +1,83 @@
-
 <p align="center">
   <img alt="Logo" src="/lib/assets/logo.svg" width="200" style="background-color: #a99a9a"/>
-  <h2 align="center">ActiveBg</h2>
+  <h1 align="center">ActiveBg</h1>
 </p>
 
+<p align="center">
+  <a href="/lib/assets/release">📥 下载软件</a> |
+  <a href="https://github.com/sqmw/ActiveBgDynamic">💻 查看源码</a> |
+  <a href="https://files.catbox.moe/uojxv1.mp4">🎥 观看介绍视频</a>
+</p>
 
-<div style="display: flex; justify-content: space-around">
-    <a href="/lib/assets/release">点击前往下载</a>
-</div>
+## 📌 支持平台
 
+- ✅ Windows 11/10
+- 🚧 macOS (开发中)
 
-**动态壁纸客户端原码地址**: https://github.com/sqmw/ActiveBgDynamic
+## 🌟 功能展示
 
-**介绍视频链接**: https://files.catbox.moe/uojxv1.mp4
-1. 设备支持
-   1. windows
-        - windows11/windows10
-   2. macOS
-        - 待开发
+### 动态与静态壁纸效果
+<img src="/lib/assets/description/dynamic.gif" width="960" alt="动态壁纸效果"/>
+<img src="/lib/assets/description/static.gif" width="960" alt="静态壁纸效果"/>
 
-## 目录
-- [关于/效果](#关于和效果)
-- [使用](#使用)
-- [特点](#特点)
-- [下载](#下载)
-- [支持](#研发和发展)
-
-### 关于和效果
-<img src="/lib/assets/description/dynamic.gif" width="960" alt="动态图片"/>
-<img src="/lib/assets/description/static.gif" width="960" alt="静态图片"/>
-
-
-ActiveBg 是拥有各种类型的壁纸选择，并且开源免费的软件
-
+### 本地和网络资源
 <img src="/lib/assets/description/local_net_resource.gif" width="800"/>
 
-ActiveBg操作简易，很方便就能设置一个美丽的桌面壁纸
+## ✨ 核心功能
 
-#### 加入讨论:
-* <a href="https://gitee.com/s99q/ActiveBg/issues">Gitee</a>
-* <a href="https://github.com/sqmw/ActiveBg/issues">Github</a>
-
-### 使用
-
-#### 开启任务栏透明
+### 1. 任务栏透明化
 <img src="/lib/assets/description/start_taskbar_transparent.png" width="800">
 
-#### 推荐静态壁纸
-<img src="/lib/assets/description/recommend.png" width="800">
-
-#### 设置壁纸定时切换
+### 2. 壁纸定时切换
 <img src="/lib/assets/description/timeChange.png" width="800">
 
-#### 搜索壁纸
+### 3. 动态壁纸功能
+- **搜索功能**
 <img src="/lib/assets/description/searchStatic.png" width="800">
 
-#### 设定动态壁纸
-<img src="/lib/assets/description/start_taskbar_transparent.png" width="800">
+- **推荐系统**
+<img src="/lib/assets/description/recommend.png" width="800">
 
-### 特点
-*轻量级(安装包体积小、启动之后占用CPU以及内存均很小)*
+## 💪 特点优势
 
-[comment]: <> ("这里需要放置CPU以及内存的图片")
+### 轻量级设计
+- 小巧的安装包
+- 极低的系统资源占用
 
-#### 图片或者动图展示
+### 高度可定制
+- **可扩展的资源源**
+  - 支持自定义动态壁纸搜索源
+  - 完全解耦的外部依赖设计
+  - 便于接入不同的资源平台
+
+- **脚本化/插件化支持**
+  - 支持自定义 JavaScript 脚本
+  - 可自定义 HTML 展示方式
+  - 灵活的插件扩展机制
+
 <img src="/lib/assets/description/activeBg_usage_of_CPU_and_memory.png" width="800"/>
-
-> ActiveBg的CPU以及内存占用情况
+<p align="center">ActiveBg 资源占用情况</p>
 
 <img src="/lib/assets/description/XXdesk_software_usage_of_CPU_and_memory.png" width="800"/>
+<p align="center">对比：其他同类软件资源占用情况</p>
 
-> XXX软件CPU以及内存占用情况
+### WebView2 技术支持
+- HTML/URL 壁纸支持
+- JavaScript 脚本支持（开发中）
+- 音频响应式壁纸（开发中）
+- 自定义静态壁纸 API
 
-<br />
+## 🤝 参与贡献
 
-* 任务栏目前借助开源项目<a href="https://github.com/TranslucentTB/TranslucentTB">TranslucentTB</a>实现
-* 提供了多种多样的壁纸选择，可以个性化设置
-* 经过测试在动态桌面的时候，内存占用仅仅10M以内, CPU占用也很低，均相较于同类软件有很大的优势
-#### <a href="https://developer.microsoft.com/en-us/microsoft-edge/webview2/">WebView2</a>
+### 加入讨论
+- [Gitee Issues](https://gitee.com/s99q/ActiveBg/issues)
+- [Github Issues](https://github.com/sqmw/ActiveBg/issues)
 
-* 加载Html文件或者一个url链接地址作为壁纸
-* 可以支持运行JS脚本(暂未开放接口)
-* 支持音频响应式壁纸(暂未开放接口)
-* 支持个性化自定义静态壁纸API
+### 如何贡献
+1. **开发者**：欢迎参与代码开发
+2. **用户**：提交建议和 Bug 报告
 
-### 下载
-
-<a href="/lib/assets/release">点击前往下载</a>
-
-### 研发和发展
-您是桌面美化的热爱者吗，下面的选择可以让你贡献一份力量
-
-#### 程序员
-
-欢迎参与接下来的开发中
-
-#### 建议和 bug 提交
-如果您在使用的过程中有好的建议或者发现了错误，可以在issue提出或者联系作者方便改善ActiveBg
+## 📝 注意事项
+- 任务栏透明效果基于开源项目 [TranslucentTB](https://github.com/TranslucentTB/TranslucentTB)
 
 

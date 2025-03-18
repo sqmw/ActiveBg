@@ -1,22 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:window_manager/window_manager.dart';
-import 'component/my_app.dart';
+import 'pages/home/home_page.dart';
+import 'shared/themes/app_theme.dart';
 
 void main() async {
-  // 确保 Flutter 绑定初始化
   WidgetsFlutterBinding.ensureInitialized();
-  
-  // 初始化 window_manager
   await windowManager.ensureInitialized();
 
-  // 配置窗口属性
   WindowOptions windowOptions = const WindowOptions(
-    titleBarStyle: TitleBarStyle.hidden, // 隐藏标题栏
+    titleBarStyle: TitleBarStyle.hidden,
     alwaysOnTop: true,
-    // 可以添加其他窗口配置，比如：
-    size: Size(800, 600),
-    // minimumSize: Size(400, 300),
-    // center: true,
+    size: Size(1000, 800),
+    center: true,
   );
   
   await windowManager.waitUntilReadyToShow(windowOptions, () async {
@@ -24,5 +19,9 @@ void main() async {
     await windowManager.focus();
   });
 
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    theme: AppTheme.lightTheme,
+    home: const HomePage(),
+  ));
 }

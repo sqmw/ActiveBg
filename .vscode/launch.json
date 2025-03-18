@@ -8,7 +8,8 @@
             "flutterMode": "debug",
             "args": [
                 "--web-port",
-                "5000"
+                "5000",
+                "--enable-impeller"
             ]
         },
         {
@@ -18,7 +19,8 @@
             "flutterMode": "profile",
             "args": [
                 "--web-port",
-                "5000"
+                "5000",
+                "--enable-impeller"
             ]
         },
         {
@@ -28,7 +30,8 @@
             "flutterMode": "release",
             "args": [
                 "--web-port",
-                "5000"
+                "5000",
+                "--enable-impeller"
             ]
         },
         {
@@ -38,7 +41,8 @@
             "deviceId": "windows",
             "args": [
                 "--web-port",
-                "5000"
+                "5000",
+                "--enable-impeller"
             ]
         },
         {
@@ -48,7 +52,8 @@
             "deviceId": "macos",
             "args": [
                 "--web-port",
-                "5000"
+                "5000",
+                "--enable-impeller"
             ]
         }
     ],
